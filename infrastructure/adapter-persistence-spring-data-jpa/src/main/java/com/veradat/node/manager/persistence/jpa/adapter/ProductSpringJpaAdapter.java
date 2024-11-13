@@ -10,12 +10,15 @@
 package com.veradat.node.manager.persistence.jpa.adapter;
 
 import com.veradat.commons.exception.utils.IdentifierManager;
+import com.veradat.node.manager.persistence.jpa.entity.KeyNameEntity;
+import com.veradat.node.manager.persistence.jpa.entity.NodeMappingEntity;
 import com.veradat.node.manager.persistence.jpa.repository.KeyNameRepository;
 import com.veradat.node.manager.persistence.jpa.repository.NodeMappingRepository;
 import com.veradat.nodemanager.domain.model.KeyName;
 import com.veradat.nodemanager.domain.model.Mapping;
 import com.veradat.nodemanager.domain.model.NodeMapping;
 import com.veradat.nodemanager.domain.outputport.PersistencePort;
+import com.veradat.node.manager.persistence.jpa.entity.NodeMappingEntity;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
