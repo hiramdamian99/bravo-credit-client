@@ -10,8 +10,6 @@
 package com.veradat.node.manager.persistence.jpa.adapter;
 
 import com.veradat.commons.exception.utils.IdentifierManager;
-import com.veradat.node.manager.persistence.jpa.entity.KeyNameEntity;
-import com.veradat.node.manager.persistence.jpa.entity.NodeMappingEntity;
 import com.veradat.node.manager.persistence.jpa.repository.KeyNameRepository;
 import com.veradat.node.manager.persistence.jpa.repository.NodeMappingRepository;
 import com.veradat.nodemanager.domain.model.KeyName;
