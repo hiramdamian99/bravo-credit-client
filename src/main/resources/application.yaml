@@ -1,0 +1,13 @@
+microservicio: MIFERE01
+
+spring:
+  application:
+    name: veradat-node-manager
+  config:
+    import: "optional:configserver:${config.server.url}"
+  profiles:
+    active: ${active.profile}
+  cloud:
+    config:
+      label: ${namespace}
+
