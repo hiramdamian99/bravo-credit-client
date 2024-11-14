@@ -44,7 +44,7 @@ steps:
       Contents: settings.xml
       TargetFolder: '$(System.DefaultWorkingDirectory)/$(COMPONENT_NAME)/conf'
   - template:
-     java-springboot-steps-poc.yml@pipeline-template
+     java-springboot-steps.yml@pipeline-template
     parameters:
       mySonarKey: $(MY_SONAR_KEY)
       componentName: $(COMPONENT_NAME)
