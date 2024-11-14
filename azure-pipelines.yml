@@ -2,12 +2,12 @@
 name: 0.$(Date:yyMMdd)$(Rev:.r)  # Trying to set '$(Build.BuildNumber)'
 # Variables definidas para el pipeline (ajusta estos valores según tu configuración)
 variables:
-#---v EDITABLE-----------------------------------------------------------------------------------------------    
+  #---v EDITABLE-----------------------------------------------------------------------------------------------
   - name: MY_SONAR_KEY
     value: com.veradat.node.manager:veradat-node-manager
   - name: COMPONENT_NAME
     value: veradat-node-manager
-#---^ EDITABLE-----------------------------------------------------------------------------------------------    
+  #---^ EDITABLE-----------------------------------------------------------------------------------------------
   - name: system.debug
     value: 'true'
   - name: JAVA_HOME_17_X64
@@ -16,20 +16,20 @@ variables:
     value: /opt/maven
   - name: MAVEN_CACHE_FOLDER
     value: $(Pipeline.Workspace)/.m2/repository
-  - name: MAVEN_OPTS 
-    value: '-Xmx1024m -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'  
+  - name: MAVEN_OPTS
+    value: '-Xmx1024m -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'
 resources:
   repositories:
-  - repository: pipeline-template
-    type: git
-    name: pipeline-template
-    ref: main
-  - repository: self
-trigger: 
+    - repository: pipeline-template
+      type: git
+      name: pipeline-template
+      ref: main
+    - repository: self
+trigger:
   branches:
-    include: 
-    - development
-    - integration*
+    include:
+      - development
+      - integration*
 # Definición del pool de agentes a utilizar (ejemplo usando Ubuntu)
 pool: Default
 steps:
@@ -44,7 +44,7 @@ steps:
       Contents: settings.xml
       TargetFolder: '$(System.DefaultWorkingDirectory)/$(COMPONENT_NAME)/conf'
   - template:
-     java-springboot-steps.yml@pipeline-template
+      java-springboot-steps.yml@pipeline-template
     parameters:
       mySonarKey: $(MY_SONAR_KEY)
       componentName: $(COMPONENT_NAME)
@@ -54,3 +54,4 @@ steps:
       mavenCachePath: $(MAVEN_CACHE_FOLDER)
       mavenOpts: $(MAVEN_OPTS)
       dockerFileTemplate: 'Dockerfile-otel'
+      targetPath: target
