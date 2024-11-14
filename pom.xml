@@ -97,10 +97,6 @@
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter</artifactId>
         </dependency>
-        <dependency>
-            <groupId>org.springframework.boot</groupId>
-            <artifactId>spring-boot-starter-web</artifactId>
-        </dependency>
         <!-- SPRING CLOUD -->
         <dependency>
             <groupId>org.springframework.cloud</groupId>
@@ -152,10 +148,6 @@
             <artifactId>token-validator</artifactId>
         </dependency>
         <dependency>
-            <groupId>org.springframework</groupId>
-            <artifactId>spring-web</artifactId>
-        </dependency>
-        <dependency>
             <groupId>com.veradat</groupId>
             <artifactId>veradat-commons</artifactId>
         </dependency>
@@ -178,21 +170,12 @@
             <artifactId>spring-boot-test</artifactId>
         </dependency>
         <dependency>
-            <groupId>com.veradat.lib</groupId>
-            <artifactId>messages-broker</artifactId>
-        </dependency>
-        <dependency>
             <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-data-jpa</artifactId>
         </dependency>
         <dependency>
             <groupId>jakarta.persistence</groupId>
             <artifactId>jakarta.persistence-api</artifactId>
-        </dependency>
-        <dependency>
-            <groupId>org.projectlombok</groupId>
-            <artifactId>lombok</artifactId>
-            <scope>provided</scope>
         </dependency>
         <dependency>
             <groupId>org.postgresql</groupId>
