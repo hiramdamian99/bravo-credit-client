@@ -7,9 +7,9 @@
  * File: NodeMappingRepository.java
  */
 
-package com.veradat.vdt.node.manager.jpa.repository;
+package com.veradat.vdt.node.manager.infrastructure.repository;
 
-import com.veradat.vdt.node.manager.jpa.entity.NodeMappingEntity;
+import com.veradat.vdt.node.manager.infrastructure.entity.NodeMappingEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 
 /**

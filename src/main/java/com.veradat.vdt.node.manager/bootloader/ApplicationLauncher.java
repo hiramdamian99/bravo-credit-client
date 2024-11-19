@@ -7,12 +7,10 @@
  * File: ApplicationLauncher.java
  */
 
-package com.veradat.vdt.node.manager.manager;
+package com.veradat.vdt.node.manager.bootloader;
 
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
-import org.springframework.boot.autoconfigure.amqp.RabbitAutoConfiguration;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
 
