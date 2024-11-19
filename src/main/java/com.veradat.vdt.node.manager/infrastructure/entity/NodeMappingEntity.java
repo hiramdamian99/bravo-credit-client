@@ -7,7 +7,7 @@
  * File: NodeMappingEntity.java
  */
 
-package com.veradat.vdt.node.manager.jpa.entity;
+package com.veradat.vdt.node.manager.infrastructure.entity;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;

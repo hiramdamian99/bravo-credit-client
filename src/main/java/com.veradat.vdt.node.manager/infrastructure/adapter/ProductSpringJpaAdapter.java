@@ -7,14 +7,14 @@
  * File: ProductSpringJpaAdapter.java
  */
 
-package com.veradat.vdt.node.manager.jpa.adapter;
+package com.veradat.vdt.node.manager.infrastructure.adapter;
 
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
 import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 import com.veradat.vdt.node.manager.domain.outputport.PersistencePort;
-import com.veradat.vdt.node.manager.jpa.entity.NodeMappingEntity;
-import com.veradat.vdt.node.manager.jpa.repository.NodeMappingRepository;
+import com.veradat.vdt.node.manager.infrastructure.entity.NodeMappingEntity;
+import com.veradat.vdt.node.manager.infrastructure.repository.NodeMappingRepository;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;

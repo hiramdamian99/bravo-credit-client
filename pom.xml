@@ -43,7 +43,7 @@
                 </executions>
                 <configuration>
                     <mainClass>
-                        com.veradat.vdt.node.manager.manager.ApplicationLauncher
+                        com.veradat.vdt.node.manager.bootloader.ApplicationLauncher
                     </mainClass>
                     <layout>JAR</layout>
                 </configuration>
