@@ -7,7 +7,7 @@
  * File: NodeMappingUseCaseTest.java
  */
 
-package com.veradat.nodemanager.domain.usecases;
+package com.veradat.vdt.node.manager;
 
 
 import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
