@@ -22,36 +22,36 @@ resources:
   repositories:
     - repository: pipeline-template
       type: git
-      name: pipeline-template
-      ref: main
+      name: iac/pipeline-template
+      ref: veradat-feb-node
     - repository: self
+
 trigger:
   branches:
     include:
       - development
       - integration*
-# Definición del pool de agentes a utilizar (ejemplo usando Ubuntu)
+
 pool: Default
 steps:
   - checkout: self
     fetchDepth: 0
-    #path: $(Build.SourcesDirectory)
+
   - checkout: pipeline-template
+
   - task: CopyFiles@2
     displayName: 'Copy Files from: /opt/apache-maven-3.9.4/conf/'
     inputs:
       SourceFolder: '/opt/apache-maven-3.9.4/conf/'
       Contents: settings.xml
       TargetFolder: '$(System.DefaultWorkingDirectory)/$(COMPONENT_NAME)/conf'
+
   - template:
-      java-springboot-steps.yml@pipeline-template
+      steps/java-microservice-build.yaml@pipeline-template
     parameters:
       mySonarKey: $(MY_SONAR_KEY)
-      componentName: $(COMPONENT_NAME)
       pomPath: $(Build.Repository.Name)
-      javaPath: $(JAVA_HOME_17_X64)
       mavenPath: $(MAVEN)
       mavenCachePath: $(MAVEN_CACHE_FOLDER)
       mavenOpts: $(MAVEN_OPTS)
-      dockerFileTemplate: 'Dockerfile-otel'
       targetPath: target
