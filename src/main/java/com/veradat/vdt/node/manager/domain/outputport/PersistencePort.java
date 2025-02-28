@@ -9,6 +9,7 @@
 
 package com.veradat.vdt.node.manager.domain.outputport;
 
+import com.veradat.commons.exception.VeradatException;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
 import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 
@@ -27,7 +28,7 @@ public interface PersistencePort
      * @param enqueryId    the enquery id
      * @param nodeMapping  the node mapping
      */
-    void registerNodeMappingList(String originNodeId, String enqueryId, List<NodeMapping> nodeMapping);
+    void registerNodeMappingList(String originNodeId, String enqueryId, List<NodeMapping> nodeMapping) throws VeradatException;
 
     /**
      * Gets process id.
@@ -36,7 +37,7 @@ public interface PersistencePort
      *
      * @return the process id
      */
-    Mapping getProcessId(String enqueryNodeId);
+    Mapping getProcessId(String enqueryNodeId) throws VeradatException;
 
-    void persistNodeMappings(List<Mapping> nodeMappings);
+    void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException;
 }

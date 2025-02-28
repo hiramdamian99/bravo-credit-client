@@ -9,7 +9,9 @@
 
 package com.veradat.vdt.node.manager.application.rest.controller;
 
+import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
+import com.veradat.commons.message.Logger.LoggerService;
 import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
@@ -33,7 +35,7 @@ public class NodeManagerController implements NodeManagerApi {
         IdentifierManager.registerClassIdentifier(NodeManagerController.class, "NMC");
     }
 
-    private final Logger logger = LoggerFactory.getLogger(NodeManagerController.class);
+    private final LoggerService logger = LoggerService.getLogger(NodeManagerController.class);
     private final NodeMappingAsyncInputPort nodeMappingAsyncInputPort;
 
     @Autowired
@@ -41,9 +43,8 @@ public class NodeManagerController implements NodeManagerApi {
         this.nodeMappingAsyncInputPort = nodeMappingAsyncInputPort;
     }
 
-    public ResponseEntity<List<NodeMapping>> postNodeMappingRequest(NodeMappingCommand command) {
+    public ResponseEntity<List<NodeMapping>> postNodeMappingRequest(NodeMappingCommand command) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("postNodeMappingRequest", "PNMR");
-        logger.info("postNodeMappingRequest");
         List<NodeMapping> mappings =
                 nodeMappingAsyncInputPort.createNodeMapping(
                         command.getOriginNodeId(), command.getProcessId(), command.getNodes());
@@ -55,16 +56,14 @@ public class NodeManagerController implements NodeManagerApi {
     public ResponseEntity<NodeMapping> getNode(String originNode) {
         IdentifierManager.registerMethodIdentifier("getNode", "GN");
 
-        logger.info("getNode");
         NodeMapping node = nodeMappingAsyncInputPort.getNode(originNode);
 
         return new ResponseEntity<>(node, HttpStatus.OK);
     }
 
-    public ResponseEntity<Mapping> getProcess(String enqueryNodeId) {
+    public ResponseEntity<Mapping> getProcess(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcess", "GP");
 
-        logger.info("getProcess");
         Mapping nodeMapping = nodeMappingAsyncInputPort.getProcessId(enqueryNodeId);
         if (nodeMapping == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
@@ -75,9 +74,9 @@ public class NodeManagerController implements NodeManagerApi {
     @Override
     public ResponseEntity<KeyResponseDTO> getPublicKey(
             String nodeMappingId, boolean isConversationOrigin, String processType)
-            throws NotFoundException {
+            throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getPublicKey", "GPK");
-        logger.info(
+        logger.debug("VNM.NMC.PNMR.debug.1",
                 "Iniciando el proceso de consultar la llave pública con los datos: {}, {}, {}",
                 nodeMappingId,
                 isConversationOrigin,
