@@ -10,6 +10,7 @@
 package com.veradat.vdt.node.manager;
 
 
+import com.veradat.commons.exception.VeradatException;
 import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
@@ -213,8 +214,7 @@ public class NodeMappingUseCaseTest
     }
 
     @Test
-    public void persistNodeMappings()
-    {
+    public void persistNodeMappings() throws VeradatException {
         Mapping nodeMapping = new Mapping();
         nodeMapping.setOriginInstitution("originInstitution1");
         nodeMapping.setDestinyInstitution("destinyInstitution1");

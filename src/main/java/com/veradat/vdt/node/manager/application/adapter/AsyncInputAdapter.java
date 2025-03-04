@@ -1,5 +1,6 @@
 package com.veradat.vdt.node.manager.application.adapter;
 
+import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.lib.messages.general.annotation.VeradatListener;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
@@ -32,7 +33,7 @@ public class AsyncInputAdapter {
         queues = "${veradat.input.queues.persist-node-routings}",
         permission=  "PE"
     )
-    public void persistScheduledMatchProcess(NodeMappings nodeMappings) {
+    public void persistScheduledMatchProcess(NodeMappings nodeMappings) throws VeradatException {
         nodeMappingUseCase.persistNodeMappings(nodeMappings.getMappings());
     }
 }

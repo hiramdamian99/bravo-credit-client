@@ -9,9 +9,11 @@
 
 package com.veradat.vdt.node.manager.domain.usecases;
 
+import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.commons.exception.utils.MapUtils;
-import com.veradat.commons.uuidgenerator.UUIDGenerator;
+import com.veradat.commons.message.Logger.LoggerService;
+import com.veradat.lib.util.UUIDGenerator;
 import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
@@ -22,8 +24,7 @@ import jakarta.validation.ValidationException;
 import jakarta.validation.constraints.NotNull;
 import org.apache.commons.lang3.RandomStringUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,10 +41,13 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         IdentifierManager.registerClassIdentifier(NodeMappingUseCase.class,"NMU");
     }
 
+
+    private final LoggerService logger = LoggerService.getLogger(NodeMappingUseCase.class);
+
     /**
      * logger
      */
-    private final Logger logger = LoggerFactory.getLogger(NodeMappingUseCase.class);
+
 
     private final PersistencePort persistencePort;
 
@@ -58,7 +62,7 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         this.persistencePort = persistencePort;
     }
 
-    public List<NodeMapping> createNodeMapping(String originNodeId, String enqueryId, @NotNull List<String> nodes) {
+    public List<NodeMapping> createNodeMapping(String originNodeId, String enqueryId, @NotNull List<String> nodes) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("createNodeMapping","CNM");
 
         List<NodeMapping> items = nodes
@@ -80,18 +84,19 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         return new NodeMapping(UUIDGenerator.generateVeradatUUID(), originNode, RandomStringUtils.randomAlphabetic(3));
     }
 
-    public Mapping getProcessId(String enqueryNodeId) {
+    public Mapping getProcessId(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcessId","GPI");
         return persistencePort.getProcessId(enqueryNodeId);
     }
 
     @Override
-    public KeyResponseDTO getKeyAlias(String nodeMappingId, boolean isConversationOrigin, String processType) throws NotFoundException {
+    public KeyResponseDTO getKeyAlias(String nodeMappingId, boolean isConversationOrigin, String processType) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getKeyAlias","GKA");
 
-        logger.info("Iniciando proceso de la obtención de la llave pública con los datos: {}, {}, {}",
-            nodeMappingId, isConversationOrigin, processType
-        );
+        logger.debug("VNM.NMU.GKA.debug.1",
+                "Iniciando proceso de la obtención de la llave pública con los datos: {}, {}, {}",
+            nodeMappingId, isConversationOrigin, processType);
+
 
 
         KeyResponseDTO keyResponse = new KeyResponseDTO();
@@ -99,29 +104,32 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         Mapping mapping = getProcessId(nodeMappingId);
 
         if(mapping==null)
-            throw new NotFoundException("Ocurrio un error al intentar consultar el mapeo del nodo",1,
-                MapUtils.nullableValueMap("nodeMappingId",nodeMappingId,"isConversationOrigin",isConversationOrigin,"processType",processType));
+            throw new NotFoundException(logger.except("VNM.NMU.GKA.EXCEPTION.1",
+                    "Ocurrio un error al intentar consultar el mapeo del nodo"),1,
+                MapUtils.nullableValueMap("nodeMappingId",nodeMappingId,
+                        "isConversationOrigin",isConversationOrigin,"processType",processType));
 
 
-        if (((processType.equals("EPTE") || processType.equals("EPTM")) && isConversationOrigin) || (processType.equals("EPTA") && !isConversationOrigin)) {
-            logger.info("Caso en el que es una búsqueda y es el origen de la conversacion");
+        if (((processType.equals("EPTE") || processType.equals("EPTM")) &&
+                isConversationOrigin) || (processType.equals("EPTA") && !isConversationOrigin)) {
+            logger.debug("VNM.NMU.GKA.debug.2", "Caso en el que es una búsqueda y es el origen de la conversacion");
             keyResponse.setOriginNode(mapping.getOriginInstitution());
             keyResponse.setKeyNode(mapping.getDestinyInstitution());
         } else if ((processType.equals("EPTA") && isConversationOrigin) || ((processType.equals("EPTE") || processType.equals("EPTM")) && !isConversationOrigin)) {
-            logger.info("Caso en el que es una alerta y es el origen de la conversacion");
+            logger.debug("VNM.NMU.GKA.debug.3","Caso en el que es una alerta y es el origen de la conversacion");
             keyResponse.setOriginNode(mapping.getDestinyInstitution());
             keyResponse.setKeyNode(mapping.getOriginInstitution());
         } else {
-            throw new ValidationException("Los datos ingresados no concuerdan");
+            throw new ValidationException(logger.except("VNM.NMU.GKA.EXCEPTION.2","Los datos ingresados no concuerdan"));
         }
 
         return keyResponse;
     }
 
     @Override
-    public void persistNodeMappings(List<Mapping> nodeMappings) {
+    public void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("persistNodeMappings","PNM");
-        logger.info("Persistiendo mapeo de nodos");
+        logger.debug("VNM.NMU.PNM.debug.1", "Persistiendo mapeo de nodos");
         persistencePort.persistNodeMappings(nodeMappings);
     }
 }

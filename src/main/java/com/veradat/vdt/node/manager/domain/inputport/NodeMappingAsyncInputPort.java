@@ -10,6 +10,7 @@
 package com.veradat.vdt.node.manager.domain.inputport;
 
 
+import com.veradat.commons.exception.VeradatException;
 import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
@@ -32,7 +33,7 @@ public interface NodeMappingAsyncInputPort {
      *
      * @return the list
      */
-    List<NodeMapping> createNodeMapping(String originIp, String enqueryId, @NotNull List<String> nodes);
+    List<NodeMapping> createNodeMapping(String originIp, String enqueryId, @NotNull List<String> nodes) throws VeradatException;
 
     /**
      * Gets node.
@@ -50,7 +51,7 @@ public interface NodeMappingAsyncInputPort {
      *
      * @return the process id
      */
-    Mapping getProcessId(String enqueryNodeId);
+    Mapping getProcessId(String enqueryNodeId) throws VeradatException;
 
     /**
      * Gets key alias.
@@ -61,13 +62,13 @@ public interface NodeMappingAsyncInputPort {
      *
      * @return the key alias
      */
-    KeyResponseDTO getKeyAlias(String nodeMappingId, boolean isConversationOrigin, String processType) throws NotFoundException;
+    KeyResponseDTO getKeyAlias(String nodeMappingId, boolean isConversationOrigin, String processType) throws VeradatException;
 
     /**
      * Persist node mappings.
      *
      * @param nodeMappings the node mappings
      */
-    void persistNodeMappings(List<Mapping> nodeMappings);
+    void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException;
 
 }

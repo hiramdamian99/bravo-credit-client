@@ -10,6 +10,7 @@
 package com.veradat.vdt.node.manager.application.rest.controller;
 
 
+import com.veradat.commons.exception.VeradatException;
 import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
@@ -35,7 +36,7 @@ public interface NodeManagerApi {
      */
     @PostMapping("/node-mapping/create")
     ResponseEntity<List<NodeMapping>> postNodeMappingRequest(
-            @RequestBody NodeMappingCommand command);
+            @RequestBody NodeMappingCommand command) throws VeradatException;
 
     /**
      * Gets node.
@@ -53,7 +54,7 @@ public interface NodeManagerApi {
      * @return the process
      */
     @GetMapping("/node-mapping/mapping/{enqueryNodeId}")
-    ResponseEntity<Mapping> getProcess(@PathVariable String enqueryNodeId);
+    ResponseEntity<Mapping> getProcess(@PathVariable String enqueryNodeId) throws VeradatException;
 
     /**
      * Gets public key.
@@ -73,5 +74,5 @@ public interface NodeManagerApi {
             @PathVariable
                     @NotBlank(message = "El tipo de proceso no puede ser vacio")
                     String processType)
-            throws NotFoundException;
+            throws VeradatException;
 }
