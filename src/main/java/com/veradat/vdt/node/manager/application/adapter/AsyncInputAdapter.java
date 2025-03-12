@@ -1,3 +1,16 @@
+/*
+ * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
+ *  VERADAT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ *
+ * Project: veradat-node-manager
+ * File: AsyncInputAdapter
+ * Author: Hiram Lopez Damian
+ * Created At: 12/09/2023
+ * Updated At: 12/03/2025
+ * Description: This class persist node routings information
+ */
+
+
 package com.veradat.vdt.node.manager.application.adapter;
 
 import com.veradat.commons.exception.VeradatException;
@@ -5,11 +18,13 @@ import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.lib.messages.general.annotation.VeradatListener;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.match.NodeMappings;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
+/**
+ * This class persist node routings information
+ */
 @Service
 public class AsyncInputAdapter {
 
