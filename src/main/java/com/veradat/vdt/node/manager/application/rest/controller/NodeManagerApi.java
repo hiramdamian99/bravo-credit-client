@@ -11,12 +11,13 @@ package com.veradat.vdt.node.manager.application.rest.controller;
 
 
 import com.veradat.commons.exception.VeradatException;
-import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
 import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 import com.veradat.vdt.node.manager.domain.model.NodeMappingCommand;
+import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import jakarta.validation.constraints.NotBlank;
+import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -34,7 +35,8 @@ public interface NodeManagerApi {
      * @param command the command
      * @return the response entity
      */
-    @PostMapping("/node-mapping/create")
+    @PostMapping(value = "/node-mapping/create",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to created node mapping")
     ResponseEntity<List<NodeMapping>> postNodeMappingRequest(
             @RequestBody NodeMappingCommand command) throws VeradatException;
 
@@ -44,7 +46,8 @@ public interface NodeManagerApi {
      * @param originNode the origin node
      * @return the node
      */
-    @GetMapping("/node-mapping/node/{originNode}")
+    @GetMapping(value = "/node-mapping/node/{originNode}",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to get node")
     ResponseEntity<NodeMapping> getNode(@PathVariable String originNode);
 
     /**
@@ -53,8 +56,10 @@ public interface NodeManagerApi {
      * @param enqueryNodeId the enquery node id
      * @return the process
      */
-    @GetMapping("/node-mapping/mapping/{enqueryNodeId}")
+    @GetMapping(value = "/node-mapping/mapping/{enqueryNodeId}",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to get enquery node")
     ResponseEntity<Mapping> getProcess(@PathVariable String enqueryNodeId) throws VeradatException;
+
 
     /**
      * Gets public key.
@@ -64,15 +69,11 @@ public interface NodeManagerApi {
      * @param processType the process type
      * @return the public key
      */
-    @GetMapping("/node-mapping/public-key/{nodeMappingId}/{isConversationOrigin}/{processType}")
+    @GetMapping(value = "/node-mapping/public-key/{nodeMappingId}/{isConversationOrigin}/{processType}",  produces = MediaType.APPLICATION_JSON_VALUE, consumes = MediaType.APPLICATION_JSON_VALUE)
+    @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful persict process")
     ResponseEntity<KeyResponseDTO> getPublicKey(
-            @PathVariable
-                    @NotBlank(message = "El id del mapeo no puede ser vacio")
-                    String nodeMappingId,
-            @PathVariable
-                    boolean isConversationOrigin,
-            @PathVariable
-                    @NotBlank(message = "El tipo de proceso no puede ser vacio")
-                    String processType)
+            @PathVariable @NotBlank(message = "{VNM.NMA.PK.MESSAGE.1:El id del mapeo no puede ser vacio}") String nodeMappingId,
+            @PathVariable boolean isConversationOrigin,
+            @PathVariable @NotBlank(message = "{VNM.NMA.PK.MESSAGE.2:El tipo de proceso no puede ser vacio}") String processType)
             throws VeradatException;
 }

@@ -32,7 +32,7 @@ import java.util.List;
  */
 @Service
 public class ProductSpringJpaAdapter implements PersistencePort {
-
+    static
     {
         IdentifierManager.registerClassIdentifier(ProductSpringJpaAdapter.class,"PSJA");
     }
@@ -48,6 +48,14 @@ public class ProductSpringJpaAdapter implements PersistencePort {
         this.nodeMappingRepository = nodeMappingRepository;
     }
 
+
+    /**
+     * Register node mapping list.
+     *
+     * @param originNodeId the origin node id
+     * @param enqueryId    the enquery id
+     * @param listNodeMapping  the list node mapping
+     */
     public void registerNodeMappingList(String originNodeId, String enqueryId, List<NodeMapping> listNodeMapping) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("registerNodeMappingList","RNML");
 
@@ -71,6 +79,15 @@ public class ProductSpringJpaAdapter implements PersistencePort {
         }
     }
 
+
+
+    /**
+     * Gets process id.
+     *
+     * @param enqueryNodeId the enquery node id
+     *
+     * @return the process id
+     */
     public Mapping getProcessId(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcessId","GPI");
 
@@ -96,6 +113,13 @@ public class ProductSpringJpaAdapter implements PersistencePort {
         }
         return mapping;
     }
+
+
+    /**
+     * Persist node mappings.
+     *
+     * @param nodeMappings the node mappings
+     */
 
     @Override
     public void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException {
