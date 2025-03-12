@@ -25,11 +25,11 @@ resources:
     name: pipeline-template
     ref: main
   - repository: self
-trigger: 
+trigger:
   branches:
-    include: 
-    - development
-    - integration*
+    include:
+      - development
+      - integration*
 # Definición del pool de agentes a utilizar (ejemplo usando Ubuntu)
 pool: Default
 steps:
