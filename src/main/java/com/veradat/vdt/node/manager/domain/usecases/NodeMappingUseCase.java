@@ -14,7 +14,6 @@ import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.commons.exception.utils.MapUtils;
 import com.veradat.commons.message.Logger.LoggerService;
 import com.veradat.lib.util.UUIDGenerator;
-import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
@@ -78,17 +77,48 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         return items;
     }
 
+
+
+    /**
+     * Return new node mapping.
+     *
+     * @param originNode the origin node
+     * @return the enquery node
+     */
+
     @Override
     public NodeMapping getNode(String originNode) {
         IdentifierManager.registerMethodIdentifier("getNode","GN");
         return new NodeMapping(UUIDGenerator.generateVeradatUUID(), originNode, RandomStringUtils.randomAlphabetic(3));
     }
 
+
+
+    /**
+     * Return new node mapping.
+     *
+     * @param enqueryNodeId the origin node
+     * @return the enquery node Id
+     */
+
     public Mapping getProcessId(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcessId","GPI");
         return persistencePort.getProcessId(enqueryNodeId);
     }
 
+
+
+
+
+
+    /**
+     * Return new node mapping.
+     *
+     * @param nodeMappingId the node mapping id
+     * @param isConversationOrigin the is conversation origin
+     * @param processType the process type to persist
+     * @return the key
+     */
     @Override
     public KeyResponseDTO getKeyAlias(String nodeMappingId, boolean isConversationOrigin, String processType) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getKeyAlias","GKA");
@@ -104,8 +134,8 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         Mapping mapping = getProcessId(nodeMappingId);
 
         if(mapping==null)
-            throw new NotFoundException(logger.except("VNM.NMU.GKA.EXCEPTION.1",
-                    "Ocurrio un error al intentar consultar el mapeo del nodo"),1,
+            throw new VeradatException(logger.except("VNM.NMU.GKA.EXCEPTION.1",
+                    "Ocurrio un error al intentar consultar el mapeo del nodo"),true,1,
                 MapUtils.nullableValueMap("nodeMappingId",nodeMappingId,
                         "isConversationOrigin",isConversationOrigin,"processType",processType));
 
@@ -126,6 +156,14 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         return keyResponse;
     }
 
+
+
+    /**
+     * Register node mapping list.
+     *
+     * @param nodeMappings the origin node ids
+     *
+     */
     @Override
     public void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("persistNodeMappings","PNM");

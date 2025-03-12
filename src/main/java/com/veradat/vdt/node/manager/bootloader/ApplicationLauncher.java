@@ -9,7 +9,7 @@
 
 package com.veradat.vdt.node.manager.bootloader;
 
-import org.springframework.boot.SpringApplication;
+import com.veradat.commons.application.VeradatApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.boot.autoconfigure.domain.EntityScan;
 import org.springframework.data.jpa.repository.config.EnableJpaRepositories;
@@ -29,6 +29,7 @@ public class ApplicationLauncher {
      * @param args Los argumentos de línea de comandos.
      */
     public static void main(String[] args) {
-        SpringApplication.run(ApplicationLauncher.class, args);
+        VeradatApplication.run(ApplicationLauncher.class, args);
+
     }
 }

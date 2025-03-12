@@ -231,16 +231,6 @@
 
     <repositories>
         <repository>
-            <id>veradat-security</id>
-            <url>https://pkgs.dev.azure.com/veradat/_packaging/veradat-security/maven/v1</url>
-            <releases>
-                <enabled>true</enabled>
-            </releases>
-            <snapshots>
-                <enabled>true</enabled>
-            </snapshots>
-        </repository>
-        <repository>
             <id>veradat-commons-lib</id>
             <url>https://pkgs.dev.azure.com/veradat/_packaging/veradat-commons-lib/maven/v1</url>
             <releases>
