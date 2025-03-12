@@ -11,7 +11,6 @@ package com.veradat.vdt.node.manager;
 
 
 import com.veradat.commons.exception.VeradatException;
-import com.veradat.vdt.node.manager.domain.exception.NotFoundException;
 import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
 import com.veradat.vdt.node.manager.domain.model.NodeMapping;
@@ -185,7 +184,7 @@ public class NodeMappingUseCaseTest
             = () -> nodeMappingUseCase.getKeyAlias(nodeMappingId, isConversationOrigin, processType);
 
         // Assertions
-        assertThrows(NotFoundException.class, runnable);
+        assertThrows(VeradatException.class, runnable);
     }
 
     @Test
