@@ -15,6 +15,7 @@ package com.veradat.vdt.node.manager.application.adapter;
 
 import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
+import com.veradat.lib.messages.general.annotation.VeradatAsyncConsumer;
 import com.veradat.lib.messages.general.annotation.VeradatListener;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.match.NodeMappings;
@@ -26,6 +27,7 @@ import org.springframework.stereotype.Service;
  * This class persist node routings information
  */
 @Service
+@VeradatAsyncConsumer
 public class AsyncInputAdapter {
 
     static {
