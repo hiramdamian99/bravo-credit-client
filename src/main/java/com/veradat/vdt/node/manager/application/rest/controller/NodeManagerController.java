@@ -24,7 +24,10 @@ import org.springframework.web.bind.annotation.RestController;
 
 import java.util.List;
 
-/** The type Product controller. */
+/** The type Product controller.
+ * This class is the controller for the NodeManager
+ *
+ */
 @RestController
 public class NodeManagerController implements NodeManagerApi {
 
@@ -40,6 +43,11 @@ public class NodeManagerController implements NodeManagerApi {
         this.nodeMappingAsyncInputPort = nodeMappingAsyncInputPort;
     }
 
+    /**
+     * This method is used to create a node mapping
+     * @param command the command
+     * @return List of NodeMapping
+     */
     public ResponseEntity<List<NodeMapping>> postNodeMappingRequest(NodeMappingCommand command) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("postNodeMappingRequest", "PNMR");
         List<NodeMapping> mappings =
@@ -49,6 +57,12 @@ public class NodeManagerController implements NodeManagerApi {
         return new ResponseEntity<>(mappings, status);
     }
 
+
+    /**
+     * This method is used to get a node
+     * @param originNode the origin node
+     * @return NodeMapping
+     */
     @Override
     public ResponseEntity<NodeMapping> getNode(String originNode) {
         IdentifierManager.registerMethodIdentifier("getNode", "GN");
@@ -58,6 +72,12 @@ public class NodeManagerController implements NodeManagerApi {
         return new ResponseEntity<>(node, HttpStatus.OK);
     }
 
+
+    /**
+     * This method is used to get a process
+     * @param enqueryNodeId the enquery node id
+     * @return Mapping
+     */
     public ResponseEntity<Mapping> getProcess(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcess", "GP");
 
@@ -68,6 +88,14 @@ public class NodeManagerController implements NodeManagerApi {
         return new ResponseEntity<>(nodeMapping, HttpStatus.OK);
     }
 
+
+    /**
+     * This method is used to get a public key
+     * @param nodeMappingId the node mapping id
+     * @param isConversationOrigin the is conversation origin
+     * @param processType the process type
+     * @return KeyResponseDTO
+     */
     @Override
     public ResponseEntity<KeyResponseDTO> getPublicKey(
             String nodeMappingId, boolean isConversationOrigin, String processType)

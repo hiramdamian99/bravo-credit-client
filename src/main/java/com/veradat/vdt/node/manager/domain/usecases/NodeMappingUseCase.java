@@ -61,6 +61,16 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         this.persistencePort = persistencePort;
     }
 
+
+    /**
+     * Create node mapping list.
+     *
+     * @param originNodeId the origin node id
+     * @param enqueryId the enquery id
+     * @param nodes the nodes
+     * @return NodeMapping list
+     */
+
     public List<NodeMapping> createNodeMapping(String originNodeId, String enqueryId, @NotNull List<String> nodes) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("createNodeMapping","CNM");
 
