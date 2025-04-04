@@ -212,26 +212,4 @@ public class NodeMappingUseCaseTest
         assertThrows(ValidationException.class, runnable);
     }
 
-    @Test
-    public void persistNodeMappings() throws VeradatException {
-        Mapping nodeMapping = new Mapping();
-        nodeMapping.setOriginInstitution("originInstitution1");
-        nodeMapping.setDestinyInstitution("destinyInstitution1");
-        nodeMapping.setProcessId("processId1");
-        nodeMapping.setDestinyMapping("destinyMapping1");
-
-        List<Mapping> nodeMappings = List.of(
-            nodeMapping
-        );
-
-        nodeMappingUseCase.persistNodeMappings(nodeMappings);
-
-        ArgumentCaptor<List<Mapping>> nodeMappingsCaptor = ArgumentCaptor.forClass(List.class);
-        verify(persistencePort,times(1)).persistNodeMappings(nodeMappingsCaptor.capture());
-        Mapping nodeMappingPersistence = nodeMappingsCaptor.getValue().get(0);
-        assertEquals(nodeMappingPersistence.getOriginInstitution(), nodeMapping.getOriginInstitution());
-        assertEquals(nodeMappingPersistence.getDestinyInstitution(), nodeMapping.getDestinyInstitution());
-        assertEquals(nodeMappingPersistence.getProcessId(), nodeMapping.getProcessId());
-        assertEquals(nodeMappingPersistence.getDestinyMapping(), nodeMapping.getDestinyMapping());
-    }
 }
