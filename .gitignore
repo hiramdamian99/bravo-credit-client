@@ -26,7 +26,6 @@ nbdist/
 
 ### Node.js
 node_modules/
-node/
 build/
 dist/
 

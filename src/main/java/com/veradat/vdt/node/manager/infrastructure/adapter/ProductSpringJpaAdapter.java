@@ -16,12 +16,9 @@ import com.veradat.commons.exception.utils.MapUtils;
 import com.veradat.commons.exception.utils.VeradatDBExceptionFormatter;
 import com.veradat.commons.message.Logger.LoggerService;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
-import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 import com.veradat.vdt.node.manager.domain.outputport.PersistencePort;
 import com.veradat.vdt.node.manager.infrastructure.entity.NodeMappingEntity;
 import com.veradat.vdt.node.manager.infrastructure.repository.NodeMappingRepository;
-import org.slf4j.Logger;
-import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -49,35 +46,6 @@ public class ProductSpringJpaAdapter implements PersistencePort {
     }
 
 
-    /**
-     * Register node mapping list.
-     *
-     * @param originNodeId the origin node id
-     * @param enqueryId    the enquery id
-     * @param listNodeMapping  the list node mapping
-     */
-    public void registerNodeMappingList(String originNodeId, String enqueryId, List<NodeMapping> listNodeMapping) throws VeradatException {
-        IdentifierManager.registerMethodIdentifier("registerNodeMappingList","RNML");
-
-        NodeMappingEntity nodeMappingEntity;
-
-        try {
-
-
-        for (NodeMapping nodeMapping : listNodeMapping) {
-            nodeMappingEntity = new NodeMappingEntity();
-            nodeMappingEntity.setOriginInstitution(originNodeId);
-            nodeMappingEntity.setDestinyInstitution(nodeMapping.getNodeId());
-            nodeMappingEntity.setProcessId(enqueryId);
-            nodeMappingEntity.setDestinyMapping(nodeMapping.getEnqueryNodeId());
-            nodeMappingRepository.save(nodeMappingEntity);
-        }
-        } catch (VeradatRuntimeException e) {
-            VeradatDBExceptionFormatter.formatDBCommonExceptions(logger.except("VNM.PSJA.RNML.debug.15",
-                    "Ocurrio un error al registrar el mapeo de nodos"),
-                    e, 15, MapUtils.nullableValueMap("originNodeId", originNodeId,"enqueryId",enqueryId),"PSJA","RNML");
-        }
-    }
 
 
 

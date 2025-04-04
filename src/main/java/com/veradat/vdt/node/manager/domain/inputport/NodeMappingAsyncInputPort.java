@@ -23,25 +23,7 @@ import java.util.List;
  */
 public interface NodeMappingAsyncInputPort {
 
-    /**
-     * Create node mapping list.
-     *
-     * @param originIp  the origin ip
-     * @param enqueryId the enquery id
-     * @param nodes     the nodes
-     *
-     * @return the list
-     */
-    List<NodeMapping> createNodeMapping(String originIp, String enqueryId, @NotNull List<String> nodes) throws VeradatException;
 
-    /**
-     * Gets node.
-     *
-     * @param originNode the origin node
-     *
-     * @return the node
-     */
-    NodeMapping getNode(String originNode);
 
     /**
      * Gets process id.
@@ -52,16 +34,6 @@ public interface NodeMappingAsyncInputPort {
      */
     Mapping getProcessId(String enqueryNodeId) throws VeradatException;
 
-    /**
-     * Gets key alias.
-     *
-     * @param nodeMappingId        the node mapping id
-     * @param isConversationOrigin the is conversation origin
-     * @param processType          the process type
-     *
-     * @return the key alias
-     */
-    KeyResponseDTO getKeyAlias(String nodeMappingId, boolean isConversationOrigin, String processType) throws VeradatException;
 
     /**
      * Persist node mappings.

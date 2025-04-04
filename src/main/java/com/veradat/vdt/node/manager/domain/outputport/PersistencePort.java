@@ -21,14 +21,6 @@ import java.util.List;
 public interface PersistencePort
 {
 
-    /**
-     * Register node mapping list.
-     *
-     * @param originNodeId the origin node id
-     * @param enqueryId    the enquery id
-     * @param nodeMapping  the node mapping
-     */
-    void registerNodeMappingList(String originNodeId, String enqueryId, List<NodeMapping> nodeMapping) throws VeradatException;
 
     /**
      * Gets process id.
