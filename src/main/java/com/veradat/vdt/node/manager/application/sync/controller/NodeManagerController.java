@@ -17,6 +17,7 @@ import com.veradat.vdt.node.manager.application.sync.api.NodeManagerApi;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
@@ -49,7 +50,8 @@ public class NodeManagerController implements NodeManagerApi {
      */
     @VeradatAuthority(hasPermissions = {"GPM"})
     @Override
-    public ResponseEntity<Mapping> getProcess(String enqueryNodeId) throws VeradatException {
+    public ResponseEntity<Mapping> getProcess(HttpHeaders header,
+                                              String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcess", "GP");
 
         Mapping nodeMapping = nodeMappingAsyncInputPort.getProcessId(enqueryNodeId);
