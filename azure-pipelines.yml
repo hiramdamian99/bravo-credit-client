@@ -10,6 +10,10 @@ variables:
   #---^ EDITABLE-----------------------------------------------------------------------------------------------
   - name: system.debug
     value: 'true'
+  - name: JAVA_HOME_21_X64
+    value: /usr/lib/jvm/jdk-21.0.2
+  - name: JDK_VERSION
+    value: '1.21'
   - name: JAVA_HOME_17_X64
     value: /usr/lib/jvm/java-17-openjdk-amd64
   - name: MAVEN
@@ -57,3 +61,4 @@ steps:
       targetPath: target
       mendApplication: veradat-node
       mendNonProdApplication: non-prod-veradat-node
+      jdkVersion: $(JDK_VERSION)
