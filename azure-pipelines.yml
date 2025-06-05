@@ -43,13 +43,6 @@ steps:
 
   - checkout: pipeline-template
 
-  - task: CopyFiles@2
-    displayName: 'Copy Files from: /opt/apache-maven-3.9.4/conf/'
-    inputs:
-      SourceFolder: '/opt/apache-maven-3.9.4/conf/'
-      Contents: settings.xml
-      TargetFolder: '$(System.DefaultWorkingDirectory)/$(COMPONENT_NAME)/conf'
-
   - template:
       steps/java-microservice-build.yaml@pipeline-template
     parameters:

@@ -22,6 +22,8 @@ import com.veradat.vdt.node.manager.domain.model.match.NodeMappings;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import static com.veradat.lib.security.model.AuditScope.AUDIT_ALL;
+
 
 /**
  * This class persist node routings information
@@ -48,7 +50,8 @@ public class AsyncInputAdapter {
      */
     @VeradatListener(
         queues = "${veradat.input.queues.persist-node-routings}",
-        permission=  "PE"
+        permission=  "PE",
+        auditScope  = AUDIT_ALL
     )
     public void persistScheduledMatchProcess(NodeMappings nodeMappings) throws VeradatException {
         nodeMappingUseCase.persistNodeMappings(nodeMappings.getMappings());
