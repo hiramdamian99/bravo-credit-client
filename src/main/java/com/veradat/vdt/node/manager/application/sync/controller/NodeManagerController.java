@@ -13,7 +13,6 @@ import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.commons.message.Logger.LoggerService;
 import com.veradat.lib.security.annotations.VeradatAuthority;
-import com.veradat.lib.security.model.AuditScope;
 import com.veradat.vdt.node.manager.application.sync.api.NodeManagerApi;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
@@ -22,6 +21,8 @@ import org.springframework.http.HttpHeaders;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
+
+import static com.veradat.lib.security.model.AuditScope.AUDIT_ALL;
 
 /** The type Product controller.
  * This class is the controller for the NodeManager
@@ -49,7 +50,7 @@ public class NodeManagerController implements NodeManagerApi {
      * @param enqueryNodeId the enquery node id
      * @return Mapping
      */
-    @VeradatAuthority(hasPermissions = {"GPM"}, auditScope = AuditScope.AUDIT_ALL)
+    @VeradatAuthority(hasPermissions = {"GPM"}, auditScope = AUDIT_ALL)
     @Override
     public ResponseEntity<Mapping> getProcess(HttpHeaders header,
                                               String enqueryNodeId) throws VeradatException {
