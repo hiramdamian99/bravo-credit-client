@@ -13,6 +13,7 @@ import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.commons.message.Logger.LoggerService;
 import com.veradat.lib.security.annotations.VeradatAuthority;
+import com.veradat.lib.security.model.AuditScope;
 import com.veradat.vdt.node.manager.application.sync.api.NodeManagerApi;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
@@ -48,7 +49,7 @@ public class NodeManagerController implements NodeManagerApi {
      * @param enqueryNodeId the enquery node id
      * @return Mapping
      */
-    @VeradatAuthority(hasPermissions = {"GPM"})
+    @VeradatAuthority(hasPermissions = {"GPM"}, auditScope = AuditScope.AUDIT_ALL)
     @Override
     public ResponseEntity<Mapping> getProcess(HttpHeaders header,
                                               String enqueryNodeId) throws VeradatException {

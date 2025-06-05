@@ -17,6 +17,7 @@ import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.lib.messages.general.annotation.VeradatAsyncConsumer;
 import com.veradat.lib.messages.general.annotation.VeradatListener;
+import com.veradat.lib.security.model.AuditScope;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.match.NodeMappings;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -48,7 +49,8 @@ public class AsyncInputAdapter {
      */
     @VeradatListener(
         queues = "${veradat.input.queues.persist-node-routings}",
-        permission=  "PE"
+        permission=  "PE",
+        auditScope  = AuditScope.AUDIT_ALL
     )
     public void persistScheduledMatchProcess(NodeMappings nodeMappings) throws VeradatException {
         nodeMappingUseCase.persistNodeMappings(nodeMappings.getMappings());
