@@ -52,6 +52,4 @@ steps:
       mavenCachePath: $(MAVEN_CACHE_FOLDER)
       mavenOpts: $(MAVEN_OPTS)
       targetPath: target
-      mendApplication: veradat-node
-      mendNonProdApplication: non-prod-veradat-node
       jdkVersion: $(JDK_VERSION)
