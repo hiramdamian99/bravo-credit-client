@@ -22,6 +22,8 @@ variables:
     value: $(Pipeline.Workspace)/.m2/repository
   - name: MAVEN_OPTS 
     value: '-Xmx1024m -Dmaven.repo.local=$(MAVEN_CACHE_FOLDER)'  
+  - name: MAVEN_PROFILES
+    value: '-Pcompile,vdt'
 resources:
   repositories:
     - repository: pipeline-template
@@ -51,5 +53,6 @@ steps:
       mavenPath: $(MAVEN)
       mavenCachePath: $(MAVEN_CACHE_FOLDER)
       mavenOpts: $(MAVEN_OPTS)
+      mavenProfiles: $(MAVEN_PROFILES)
       targetPath: target
       jdkVersion: $(JDK_VERSION)
