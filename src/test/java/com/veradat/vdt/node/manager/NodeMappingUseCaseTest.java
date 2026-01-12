@@ -16,6 +16,7 @@ import com.veradat.vdt.node.manager.domain.model.Mapping;
 import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 import com.veradat.vdt.node.manager.domain.outputport.PersistencePort;
 import com.veradat.vdt.node.manager.domain.usecases.NodeMappingUseCase;
+import com.veradat.vdt.node.manager.infrastructure.securty.SecurityAdapter;
 import jakarta.validation.ValidationException;
 import lombok.SneakyThrows;
 import org.junit.Test;
@@ -45,6 +46,9 @@ public class NodeMappingUseCaseTest
 
     @Mock
     public PersistencePort persistencePort;
+
+    @Mock
+    public SecurityAdapter securityAdapter;
 
 
 
@@ -80,7 +84,8 @@ public class NodeMappingUseCaseTest
         nodeMappingUseCase.persistNodeMappings(nodeMappings);
 
         // Assert
-        verify(persistencePort, times(1)).persistNodeMappings(nodeMappings);
+        verify(persistencePort, times(1))
+                .persistNodeMappings(nodeMappings, null);
     }
 
 

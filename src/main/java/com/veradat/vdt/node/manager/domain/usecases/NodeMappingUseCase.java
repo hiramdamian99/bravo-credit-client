@@ -17,6 +17,7 @@ import com.veradat.vdt.node.manager.domain.model.Mapping;
 import com.veradat.vdt.node.manager.domain.outputport.PersistencePort;
 
 
+import com.veradat.vdt.node.manager.infrastructure.securty.SecurityAdapter;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -36,6 +37,9 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
 
     private final LoggerService logger = LoggerService.getLogger(NodeMappingUseCase.class);
 
+
+    private final SecurityAdapter securityAdapter;
+
     /**
      * logger
      */
@@ -49,8 +53,9 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
      * @param persistencePort the persistence port
      */
     @Autowired
-    public NodeMappingUseCase(PersistencePort persistencePort)
+    public NodeMappingUseCase(SecurityAdapter securityAdapter, PersistencePort persistencePort)
     {
+        this.securityAdapter = securityAdapter;
         this.persistencePort = persistencePort;
     }
 
@@ -79,7 +84,7 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
     public void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("persistNodeMappings","PNM");
         logger.debug("VNM.NMU.PNM.debug.1", "Persistiendo mapeo de nodos");
-        persistencePort.persistNodeMappings(nodeMappings);
+        persistencePort.persistNodeMappings(nodeMappings,  securityAdapter.getCreatedBy());
     }
 
 

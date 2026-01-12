@@ -31,5 +31,5 @@ public interface PersistencePort
      */
     Mapping getProcessId(String enqueryNodeId) throws VeradatException;
 
-    void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException;
+    void persistNodeMappings(List<Mapping> nodeMappings, String createdBy) throws VeradatException;
 }
