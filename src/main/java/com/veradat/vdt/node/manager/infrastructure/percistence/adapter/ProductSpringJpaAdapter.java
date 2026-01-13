@@ -97,7 +97,7 @@ public class ProductSpringJpaAdapter implements PersistencePort {
         try {
 
         for (Mapping nodeMappingPersistence : nodeMappings) {
-            NodeMappingEntity nodeMappingEntity = new NodeMappingEntity();
+                NodeMappingEntity nodeMappingEntity = new NodeMappingEntity();
             nodeMappingEntity.setOriginInstitution(nodeMappingPersistence.getOriginInstitution());
             nodeMappingEntity.setDestinyInstitution(nodeMappingPersistence.getDestinyInstitution());
             nodeMappingEntity.setProcessId(nodeMappingPersistence.getProcessId());
@@ -106,7 +106,7 @@ public class ProductSpringJpaAdapter implements PersistencePort {
             nodeMappingEntity.setCreatedBy(createdBy);
             nodeMappingRepository.saveAndFlush(nodeMappingEntity);
         }
-        } catch (VeradatRuntimeException e) {
+        } catch (Exception e) {
             VeradatDBExceptionFormatter.formatDBCommonExceptions(logger.except("VNM.PSJA.RNML.debug.15",
                             "Ocurrio un error al persistir el mapeo de nodos"),
                     e, 15, MapUtils.nullableValueMap("nodeMappings", nodeMappings),"PSJA","PNMR");
