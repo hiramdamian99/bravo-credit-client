@@ -20,6 +20,7 @@ import com.veradat.vdt.node.manager.domain.outputport.PersistencePort;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -68,6 +69,8 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
 
 
 
+
+
     /**
      * Register node mapping list.
      *
@@ -75,12 +78,36 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
      *
      */
 
+
+
     @Override
     public void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException {
-        IdentifierManager.registerMethodIdentifier("persistNodeMappings","PNM");
+        IdentifierManager.registerMethodIdentifier("persistNodeMappings", "PNM");
         logger.debug("VNM.NMU.PNM.debug.1", "Persistiendo mapeo de nodos");
-        persistencePort.persistNodeMappings(nodeMappings);
+
+        if (nodeMappings == null || nodeMappings.isEmpty()) {
+            logger.debug("VNM.NMU.PNM.debug.empty", "Lista vacía, no hay nada que persistir");
+            return;
+        }
+
+        List<Mapping> toPersist = new ArrayList<>();
+
+        for (Mapping mapping : nodeMappings) {
+            Mapping existing = getProcessId(mapping.getProcessId());
+            boolean alreadyExists = existing != null
+                            && existing.getDestinyMapping() != null
+                            && existing.getDestinyMapping().equals(mapping.getDestinyMapping());
+            if (alreadyExists) {
+                logger.debug("VNM.NMU.PNM.debug.2", "El mapeo de nodo ya existe processId {}" + mapping.getDestinyMapping());
+                continue;
+            }
+
+            toPersist.add(mapping);
+        }
+
+        persistencePort.persistNodeMappings(toPersist);
     }
+
 
 
 }

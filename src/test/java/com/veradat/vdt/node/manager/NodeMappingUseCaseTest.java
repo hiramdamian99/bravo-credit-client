@@ -11,28 +11,21 @@ package com.veradat.vdt.node.manager;
 
 
 import com.veradat.commons.exception.VeradatException;
-import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
-import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 import com.veradat.vdt.node.manager.domain.outputport.PersistencePort;
 import com.veradat.vdt.node.manager.domain.usecases.NodeMappingUseCase;
-import jakarta.validation.ValidationException;
 import lombok.SneakyThrows;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
-import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
@@ -82,6 +75,25 @@ public class NodeMappingUseCaseTest
         // Assert
         verify(persistencePort, times(1)).persistNodeMappings(nodeMappings);
     }
+
+    @Test
+    public void testPersistNodeMappingsContinue() throws VeradatException {
+        Mapping mapping = new Mapping(1,
+                "InstA", "40-012", "123456765432345", "123456787654");
+        List<Mapping> nodeMappings = List.of(mapping);
+
+        Mapping existing = new Mapping(99,
+                "InstX", "40-013", "123456765432345", "123456787654");
+
+        NodeMappingUseCase spyUseCase = Mockito.spy(nodeMappingUseCase);
+        doReturn(existing).when(spyUseCase).getProcessId("123456765432345");
+
+        spyUseCase.persistNodeMappings(nodeMappings);
+
+        verify(persistencePort, times(1))
+                .persistNodeMappings(argThat(List::isEmpty));
+    }
+
 
 
 
