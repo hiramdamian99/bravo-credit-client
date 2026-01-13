@@ -29,7 +29,7 @@ public interface PersistencePort
      *
      * @return the process id
      */
-    Mapping getProcessId(String enqueryNodeId) throws VeradatException;
+    Mapping getByDestinyMapping(String enqueryNodeId) throws VeradatException;
 
     void persistNodeMappings(List<Mapping> nodeMappings) throws VeradatException;
 }

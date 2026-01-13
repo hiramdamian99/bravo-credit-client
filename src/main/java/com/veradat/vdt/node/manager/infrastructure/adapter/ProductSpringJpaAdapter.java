@@ -56,7 +56,7 @@ public class ProductSpringJpaAdapter implements PersistencePort {
      *
      * @return the process id
      */
-    public Mapping getProcessId(String enqueryNodeId) throws VeradatException {
+    public Mapping getByDestinyMapping(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcessId","GPI");
 
         NodeMappingEntity nodeMappingEntity = nodeMappingRepository.findByDestinyMapping(enqueryNodeId);

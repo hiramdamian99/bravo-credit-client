@@ -56,7 +56,7 @@ public class NodeManagerController implements NodeManagerApi {
                                               String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcess", "GP");
 
-        Mapping nodeMapping = nodeMappingAsyncInputPort.getProcessId(enqueryNodeId);
+        Mapping nodeMapping = nodeMappingAsyncInputPort.getByDestinyMapping(enqueryNodeId);
         if (nodeMapping == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

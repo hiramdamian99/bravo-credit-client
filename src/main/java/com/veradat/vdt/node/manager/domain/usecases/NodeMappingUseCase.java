@@ -62,9 +62,9 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
      * @return the enquery node Id
      */
 
-    public Mapping getProcessId(String enqueryNodeId) throws VeradatException {
+    public Mapping getByDestinyMapping(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcessId","GPI");
-        return persistencePort.getProcessId(enqueryNodeId);
+        return persistencePort.getByDestinyMapping(enqueryNodeId);
     }
 
 
@@ -93,15 +93,11 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         List<Mapping> toPersist = new ArrayList<>();
 
         for (Mapping mapping : nodeMappings) {
-            Mapping existing = getProcessId(mapping.getProcessId());
-            boolean alreadyExists = existing != null
-                            && existing.getDestinyMapping() != null
-                            && existing.getDestinyMapping().equals(mapping.getDestinyMapping());
-            if (alreadyExists) {
+            Mapping existing = getByDestinyMapping(mapping.getDestinyMapping());
+            if (existing!= null) {
                 logger.debug("VNM.NMU.PNM.debug.2", "El mapeo de nodo ya existe processId {}" + mapping.getDestinyMapping());
                 continue;
             }
-
             toPersist.add(mapping);
         }
 

@@ -54,9 +54,9 @@ public class NodeMappingUseCaseTest
         expectedMapping.setDestinyInstitution("destinyInstitution");
         expectedMapping.setProcessId("processId");
         expectedMapping.setDestinyMapping(enqueryNodeId);
-        when(persistencePort.getProcessId(enqueryNodeId)).thenReturn(expectedMapping);
+        when(persistencePort.getByDestinyMapping(enqueryNodeId)).thenReturn(expectedMapping);
 
-        Mapping actualMapping = nodeMappingUseCase.getProcessId(enqueryNodeId);
+        Mapping actualMapping = nodeMappingUseCase.getByDestinyMapping(enqueryNodeId);
 
         assertEquals(expectedMapping, actualMapping);
     }
@@ -78,18 +78,18 @@ public class NodeMappingUseCaseTest
 
     @Test
     public void testPersistNodeMappingsContinue() throws VeradatException {
-        Mapping mapping = new Mapping(1,
-                "InstA", "40-012", "123456765432345", "123456787654");
+        Mapping mapping = new Mapping(1, "InstA", "40-012", "123456765432345", "123456787654");
         List<Mapping> nodeMappings = List.of(mapping);
 
-        Mapping existing = new Mapping(99,
-                "InstX", "40-013", "123456765432345", "123456787654");
+        Mapping existing = new Mapping(99, "InstX", "40-013", "anyProc", "123456787654");
 
         NodeMappingUseCase spyUseCase = Mockito.spy(nodeMappingUseCase);
-        doReturn(existing).when(spyUseCase).getProcessId("123456765432345");
+
+        doReturn(existing).when(spyUseCase).getByDestinyMapping("123456787654");
 
         spyUseCase.persistNodeMappings(nodeMappings);
 
+        verify(spyUseCase, times(1)).getByDestinyMapping("123456787654");
         verify(persistencePort, times(1))
                 .persistNodeMappings(argThat(List::isEmpty));
     }
