@@ -74,7 +74,7 @@ public class ProductSpringJpaAdapter implements PersistencePort {
             mapping.setProcessId(nodeMappingEntity.getProcessId());
             mapping.setDestinyMapping(nodeMappingEntity.getDestinyMapping());
 
-        } catch (VeradatRuntimeException e) {
+        } catch (Exception e) {
             VeradatDBExceptionFormatter.formatDBCommonExceptions(logger.except( "VNM.PSJA.RNML.debug.15",
                             "Ocurrio un error al obtener el proceso de mapeo"),
                     e, 15, MapUtils.nullableValueMap("enqueryNodeId", enqueryNodeId),"PSJA","GPI");
@@ -103,7 +103,7 @@ public class ProductSpringJpaAdapter implements PersistencePort {
             nodeMappingEntity.setDestinyMapping(nodeMappingPersistence.getDestinyMapping());
             nodeMappingRepository.saveAndFlush(nodeMappingEntity);
         }
-        } catch (VeradatRuntimeException e) {
+        } catch (Exception e) {
             VeradatDBExceptionFormatter.formatDBCommonExceptions(logger.except("VNM.PSJA.RNML.debug.15",
                             "Ocurrio un error al persistir el mapeo de nodos"),
                     e, 15, MapUtils.nullableValueMap("nodeMappings", nodeMappings),"PSJA","PNMR");
