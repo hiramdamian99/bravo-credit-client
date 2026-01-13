@@ -24,9 +24,12 @@ import org.springframework.web.bind.annotation.RestController;
 
 import static com.veradat.lib.security.model.AuditScope.AUDIT_ALL;
 
-/** The type Product controller.
- * This class is the controller for the NodeManager
- *
+/**
+ *  Node manager controller.
+ * @Author: Hiram Lopez Damian
+ * @LastContributor: Hiram Lopez Damian
+ * @Created At: 05/03/2025
+ * @Updated At: 13/01/2026
  */
 @RestController
 public class NodeManagerController implements NodeManagerApi {

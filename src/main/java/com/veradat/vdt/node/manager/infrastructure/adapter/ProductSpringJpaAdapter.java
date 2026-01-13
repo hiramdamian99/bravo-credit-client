@@ -10,7 +10,6 @@
 package com.veradat.vdt.node.manager.infrastructure.adapter;
 
 import com.veradat.commons.exception.VeradatException;
-import com.veradat.commons.exception.VeradatRuntimeException;
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.commons.exception.utils.MapUtils;
 import com.veradat.commons.exception.utils.VeradatDBExceptionFormatter;
@@ -25,7 +24,11 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 /**
- * The type Product spring jpa adapter.
+ * adapter for node mapping persistence
+ * @Author: Hiram Lopez Damian
+ * @LastContributor: Hiram Lopez Damian
+ * @Created At: 05/03/2025
+ * @Updated At: 13/01/2026
  */
 @Service
 public class ProductSpringJpaAdapter implements PersistencePort {

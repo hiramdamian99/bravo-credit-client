@@ -3,7 +3,6 @@
  * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
  *
  * Project: veradat-node-manager
- * Module: domain
  * File: NodeMappingUseCase.java
  */
 
@@ -24,7 +23,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 /**
- * The type Node mapping use case.
+ * Use case for node mappings
+ * @Author: Hiram Lopez Damian
+ * @LastContributor: Hiram Lopez Damian
+ * @Created At: 05/03/2025
+ * @Updated At: 13/01/2026
  */
 @Service
 public class NodeMappingUseCase implements NodeMappingAsyncInputPort
@@ -95,7 +98,7 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         for (Mapping mapping : nodeMappings) {
             Mapping existing = getByDestinyMapping(mapping.getDestinyMapping());
             if (existing!= null) {
-                logger.debug("VNM.NMU.PNM.debug.2", "El mapeo de nodo ya existe processId {}" + mapping.getDestinyMapping());
+                logger.debug("VNM.NMU.PNM.debug.2", "El mapeo de nodo ya existe processId, {}" , mapping.getDestinyMapping());
                 continue;
             }
             toPersist.add(mapping);
