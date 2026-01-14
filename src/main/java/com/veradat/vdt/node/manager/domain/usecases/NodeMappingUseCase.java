@@ -10,6 +10,7 @@ package com.veradat.vdt.node.manager.domain.usecases;
 
 import com.veradat.commons.exception.VeradatException;
 import com.veradat.commons.exception.utils.IdentifierManager;
+import com.veradat.commons.exception.utils.MapUtils;
 import com.veradat.commons.message.Logger.LoggerService;
 import com.veradat.vdt.node.manager.domain.inputport.NodeMappingAsyncInputPort;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
@@ -89,8 +90,9 @@ public class NodeMappingUseCase implements NodeMappingAsyncInputPort
         logger.debug("VNM.NMU.PNM.debug.1", "Persistiendo mapeo de nodos");
 
         if (nodeMappings == null || nodeMappings.isEmpty()) {
-            logger.debug("VNM.NMU.PNM.debug.empty", "Lista vacía, no hay nada que persistir");
-            return;
+           throw new VeradatException(logger.except("VNM.NMU.PNM.error.1",
+                   "La lista de mapeos de nodos a persistir es nula o vacia"),
+                   1, MapUtils.nullableValueMap("nodeMappings", nodeMappings));
         }
 
         List<Mapping> toPersist = new ArrayList<>();

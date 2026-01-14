@@ -24,6 +24,7 @@ import org.mockito.junit.MockitoJUnitRunner;
 import java.util.Arrays;
 import java.util.List;
 import static org.junit.Assert.assertEquals;
+import static org.junit.Assert.assertThrows;
 import static org.mockito.ArgumentMatchers.argThat;
 import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
@@ -100,6 +101,15 @@ public class NodeMappingUseCaseTest
         verify(spyUseCase, times(1)).getByDestinyMapping("123456787654");
         verify(persistencePort, times(1))
                 .persistNodeMappings(argThat(List::isEmpty));
+    }
+
+    @Test
+    public void testPersistNodeMappingsException() {
+        List<Mapping> nodeMappings = List.of();
+
+        NodeMappingUseCase spyUseCase = Mockito.spy(nodeMappingUseCase);
+        assertThrows(VeradatException.class, () -> spyUseCase.persistNodeMappings(nodeMappings));
+
     }
 
 
