@@ -11,12 +11,15 @@ package com.veradat.vdt.node.manager.domain.outputport;
 
 import com.veradat.commons.exception.VeradatException;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
-import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 
 import java.util.List;
 
 /**
- * The interface Persistence port.
+ *  The interface Persistence port.
+ * @Author: Hiram Lopez Damian
+ * @LastContributor: Hiram Lopez Damian
+ * @Created At: 05/03/2025
+ * @Updated At: 13/01/2026
  */
 public interface PersistencePort
 {
@@ -29,7 +32,7 @@ public interface PersistencePort
      *
      * @return the process id
      */
-    Mapping getProcessId(String enqueryNodeId) throws VeradatException;
+    Mapping getByDestinyMapping(String enqueryNodeId) throws VeradatException;
 
     void persistNodeMappings(List<Mapping> nodeMappings, String createdBy) throws VeradatException;
 }

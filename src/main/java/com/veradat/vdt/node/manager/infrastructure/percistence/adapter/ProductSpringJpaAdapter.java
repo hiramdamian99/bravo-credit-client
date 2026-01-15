@@ -10,7 +10,6 @@
 package com.veradat.vdt.node.manager.infrastructure.percistence.adapter;
 
 import com.veradat.commons.exception.VeradatException;
-import com.veradat.commons.exception.VeradatRuntimeException;
 import com.veradat.commons.exception.utils.IdentifierManager;
 import com.veradat.commons.exception.utils.MapUtils;
 import com.veradat.commons.exception.utils.VeradatDBExceptionFormatter;
@@ -26,7 +25,11 @@ import java.time.Instant;
 import java.util.List;
 
 /**
- * The type Product spring jpa adapter.
+ * adapter for node mapping persistence
+ * @Author: Hiram Lopez Damian
+ * @LastContributor: Hiram Lopez Damian
+ * @Created At: 05/03/2025
+ * @Updated At: 13/01/2026
  */
 @Service
 public class ProductSpringJpaAdapter implements PersistencePort {
@@ -57,7 +60,7 @@ public class ProductSpringJpaAdapter implements PersistencePort {
      *
      * @return the process id
      */
-    public Mapping getProcessId(String enqueryNodeId) throws VeradatException {
+    public Mapping getByDestinyMapping(String enqueryNodeId) throws VeradatException {
         IdentifierManager.registerMethodIdentifier("getProcessId","GPI");
 
         NodeMappingEntity nodeMappingEntity = nodeMappingRepository.findByDestinyMapping(enqueryNodeId);
@@ -75,7 +78,7 @@ public class ProductSpringJpaAdapter implements PersistencePort {
             mapping.setProcessId(nodeMappingEntity.getProcessId());
             mapping.setDestinyMapping(nodeMappingEntity.getDestinyMapping());
 
-        } catch (VeradatRuntimeException e) {
+        } catch (Exception e) {
             VeradatDBExceptionFormatter.formatDBCommonExceptions(logger.except( "VNM.PSJA.RNML.debug.15",
                             "Ocurrio un error al obtener el proceso de mapeo"),
                     e, 15, MapUtils.nullableValueMap("enqueryNodeId", enqueryNodeId),"PSJA","GPI");

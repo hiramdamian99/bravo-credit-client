@@ -11,33 +11,35 @@ package com.veradat.vdt.node.manager;
 
 
 import com.veradat.commons.exception.VeradatException;
-import com.veradat.vdt.node.manager.domain.model.KeyResponseDTO;
 import com.veradat.vdt.node.manager.domain.model.Mapping;
-import com.veradat.vdt.node.manager.domain.model.NodeMapping;
 import com.veradat.vdt.node.manager.domain.outputport.PersistencePort;
 import com.veradat.vdt.node.manager.domain.usecases.NodeMappingUseCase;
 import com.veradat.vdt.node.manager.infrastructure.securty.SecurityAdapter;
-import jakarta.validation.ValidationException;
 import lombok.SneakyThrows;
 import org.junit.Test;
-import org.junit.function.ThrowingRunnable;
 import org.junit.runner.RunWith;
-import org.mockito.ArgumentCaptor;
 import org.mockito.InjectMocks;
 import org.mockito.Mock;
+import org.mockito.Mockito;
 import org.mockito.junit.MockitoJUnitRunner;
-
 import java.util.Arrays;
 import java.util.List;
-
 import static org.junit.Assert.assertEquals;
-import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertThrows;
-import static org.junit.Assert.assertTrue;
+import static org.mockito.ArgumentMatchers.argThat;
+import static org.mockito.Mockito.doReturn;
 import static org.mockito.Mockito.times;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
+
+/**
+ * Test for NodeMappingUseCase
+ * @Author: Hiram Lopez Damian
+ * @LastContributor: Hiram Lopez Damian
+ * @Created At: 05/03/2025
+ * @Updated At: 13/01/2026
+ */
 @RunWith(MockitoJUnitRunner.class)
 public class NodeMappingUseCaseTest
 {
@@ -65,9 +67,9 @@ public class NodeMappingUseCaseTest
         expectedMapping.setDestinyInstitution("destinyInstitution");
         expectedMapping.setProcessId("processId");
         expectedMapping.setDestinyMapping(enqueryNodeId);
-        when(persistencePort.getProcessId(enqueryNodeId)).thenReturn(expectedMapping);
+        when(persistencePort.getByDestinyMapping(enqueryNodeId)).thenReturn(expectedMapping);
 
-        Mapping actualMapping = nodeMappingUseCase.getProcessId(enqueryNodeId);
+        Mapping actualMapping = nodeMappingUseCase.getByDestinyMapping(enqueryNodeId);
 
         assertEquals(expectedMapping, actualMapping);
     }
@@ -87,6 +89,34 @@ public class NodeMappingUseCaseTest
         verify(persistencePort, times(1))
                 .persistNodeMappings(nodeMappings, null);
     }
+
+    @Test
+    public void testPersistNodeMappingsContinue() throws VeradatException {
+        Mapping mapping = new Mapping(1, "InstA", "40-012", "123456765432345", "123456787654");
+        List<Mapping> nodeMappings = List.of(mapping);
+
+        Mapping existing = new Mapping(99, "InstX", "40-013", "anyProc", "123456787654");
+
+        NodeMappingUseCase spyUseCase = Mockito.spy(nodeMappingUseCase);
+
+        doReturn(existing).when(spyUseCase).getByDestinyMapping("123456787654");
+
+        spyUseCase.persistNodeMappings(nodeMappings);
+
+        verify(spyUseCase, times(1)).getByDestinyMapping("123456787654");
+        verify(persistencePort, times(1))
+                .persistNodeMappings(argThat(List::isEmpty));
+    }
+
+    @Test
+    public void testPersistNodeMappingsException() {
+        List<Mapping> nodeMappings = List.of();
+
+        NodeMappingUseCase spyUseCase = Mockito.spy(nodeMappingUseCase);
+        assertThrows(VeradatException.class, () -> spyUseCase.persistNodeMappings(nodeMappings));
+
+    }
+
 
 
 
