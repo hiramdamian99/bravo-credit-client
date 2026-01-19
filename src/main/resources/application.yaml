@@ -1,13 +1,35 @@
-microservicio: MIFERE01
-
 spring:
-  application:
-    name: veradat-node-manager
   config:
-    import: "configserver:${config.server.url}"
-  profiles:
-    active: ${active.profile}
-  cloud:
-    config:
-      label: ${namespace}
+    import: "optional:configserver:"
+
+  datasource:
+    url: jdbc:postgresql://localhost:5432/demo
+    username: admin
+    password: secret
+    driveClassName: org.postgresql.Driver
+    jpa:
+      database-platform: org.hibernate.dialect.PostgreSQLDialect
+      show-sql: true
+      properties:
+        hibernate:
+          format_sql: true
+
+server:
+  port: 8080
+
+
+
+logging:
+  level:
+    com.bravo: DEBUG
+    org.hibernate: ERROR
+    org.springframework: ERROR
+    root: ERROR
+eureka:
+  client:
+    enabled: false
+
+
+### Configuracion que no debe ir en el configuration service
+
 

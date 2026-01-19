@@ -1,0 +1,72 @@
+/*
+ * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
+ * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ *
+ * Project: veradat-node-manager
+ * Module: adapter-persistence-spring-data-jpa
+ * File: ProductSpringJpaAdapter.java
+ */
+
+package com.bravo.credit.client.infrastructure.percistence.adapter;
+
+
+import com.bravo.credit.client.domain.model.Client;
+import com.bravo.credit.client.domain.outputport.PersistencePort;
+import com.bravo.credit.client.infrastructure.percistence.repository.ClientRepository;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.time.Instant;
+
+/**
+ * adapter for node mapping persistence
+ * @Author: Hiram Lopez Damian
+ * @LastContributor: Hiram Lopez Damian
+ * @Created At: 05/03/2025
+ * @Updated At: 13/01/2026
+ */
+@Service
+public class ProductSpringJpaAdapter implements PersistencePort {
+
+
+    private final ClientRepository nodeMappingRepository;
+
+    @Autowired
+    public ProductSpringJpaAdapter(
+        ClientRepository nodeMappingRepository
+    ){
+        this.nodeMappingRepository = nodeMappingRepository;
+    }
+
+
+
+    public void createdClient (Client client){
+        nodeMappingRepository.createdClient(
+                client.getIdentifier(),
+                client.getMonthlyIncome(),
+                client.getAmount(),
+                client.getCountry(),
+                Instant.now(),
+                Instant.now(),
+                "SYSTEM",
+                "SYSTEM"
+
+
+        );
+    }
+
+    /**
+     * Gets process id.
+     *
+     * @param enqueryNodeId the enquery node id
+     *
+     * @return the process id
+     */
+    public Client getByDestinyMapping(String enqueryNodeId) {
+
+
+//TODO implement method if needed
+        return null;
+    }
+
+}
