@@ -9,6 +9,7 @@
 
 package com.bravo.credit.client.infrastructure.percistence.repository;
 
+import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.infrastructure.percistence.entity.ClientEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -17,6 +18,7 @@ import org.springframework.data.repository.query.Param;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * The interface Node mapping repository.
@@ -51,6 +53,19 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer>
     )
 """, nativeQuery = true)
     void createdClient(
+            @Param("mountIncome") String mountIncome,
+            @Param("destinyInstitution") String destinyInstitution,
+            @Param("country") String country,
+            @Param("amount") String amount,
+            @Param("createdAt") Instant createdAt,
+            @Param("updatedAt") Instant updatedAt,
+            @Param("createdBy") String createdBy,
+            @Param("updatedBy") String updatedBy
+    );
+
+
+    @Query(nativeQuery = true, name = "findClient")
+    List<Client> findClient(
             @Param("mountIncome") String mountIncome,
             @Param("destinyInstitution") String destinyInstitution,
             @Param("country") String country,

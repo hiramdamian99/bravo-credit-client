@@ -21,6 +21,8 @@ import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
 /**
  * Use case for node mappings
  * @Author: Hiram Lopez Damian
@@ -67,8 +69,8 @@ public class ClientUseCase implements ClientAsyncInputPort {
      * @return the enquery node Id
      */
 
-    public Client getByDestinyMapping(String enqueryNodeId)  {
-        return persistencePort.getByDestinyMapping(enqueryNodeId);
+    public List<Client> getByDestinyMapping(Client client)  {
+        return persistencePort.getByDestinyMapping(client);
     }
 
 
@@ -84,6 +86,9 @@ public class ClientUseCase implements ClientAsyncInputPort {
             default:
                 throw new Exception("Pais no valido para crear cliente: " + client.getCountry());
         }
+
+
+
         persistencePort.createdClient( client);
     }
 

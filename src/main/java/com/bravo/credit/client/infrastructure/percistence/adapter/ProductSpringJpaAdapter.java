@@ -17,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.time.Instant;
+import java.util.List;
 
 /**
  * adapter for node mapping persistence
@@ -62,11 +63,17 @@ public class ProductSpringJpaAdapter implements PersistencePort {
      *
      * @return the process id
      */
-    public Client getByDestinyMapping(String enqueryNodeId) {
-
-
-//TODO implement method if needed
-        return null;
+    public List<Client> getByDestinyMapping(Client client) {
+        return nodeMappingRepository.findClient(
+                client.getIdentifier(),
+                client.getMonthlyIncome(),
+                client.getAmount(),
+                client.getCountry(),
+                Instant.now(),
+                Instant.now(),
+                "SYSTEM",
+                "SYSTEM"
+        );
     }
 
 }

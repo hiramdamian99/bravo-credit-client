@@ -11,6 +11,8 @@ package com.bravo.credit.client.domain.outputport;
 
 import com.bravo.credit.client.domain.model.Client;
 
+import java.util.List;
+
 /**
  *  The interface Persistence port.
  * @Author: Hiram Lopez Damian
@@ -29,7 +31,7 @@ public interface PersistencePort
      *
      * @return the process id
      */
-    Client getByDestinyMapping(String enqueryNodeId) ;
+    List<Client> getByDestinyMapping(Client client) ;
 
     void createdClient(Client client) ;
 

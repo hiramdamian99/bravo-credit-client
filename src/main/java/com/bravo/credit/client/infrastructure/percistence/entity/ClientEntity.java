@@ -9,15 +9,58 @@
 
 package com.bravo.credit.client.infrastructure.percistence.entity;
 
+import com.bravo.credit.client.domain.model.Client;
 import jakarta.persistence.Column;
+import jakarta.persistence.ColumnResult;
+import jakarta.persistence.ConstructorResult;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.NamedNativeQuery;
+import jakarta.persistence.SqlResultSetMapping;
 import jakarta.persistence.Table;
 import lombok.Data;
 
 import java.time.Instant;
+
+
+
+@SqlResultSetMapping(
+        name = "findClientResult",
+        classes =
+        @ConstructorResult(
+                targetClass = Client.class,
+                columns = {
+                        @ColumnResult(name = "process_id", type = String.class),
+                        @ColumnResult(name = "mount_income", type =  String.class),
+                        @ColumnResult(name = "destiny_institution", type =  String.class),
+                        @ColumnResult(name = "country", type =  String.class),
+                        @ColumnResult(name = "destiny_mapping", type =  String.class)
+                }))
+
+
+
+@NamedNativeQuery(
+        name = "findClient",
+        query =
+                """
+                        select * from tr_client tc
+    WHERE   ( :mount_income   IS NULL   OR mount_income     = :mount_income )
+    and ( :country   IS NULL   OR country     = :country )
+          AND (
+                  CAST(:startDate AS TIMESTAMP) IS NULL
+               OR CAST(:endDate   AS TIMESTAMP) IS NULL
+               OR created_at BETWEEN
+                      CAST(:startDate AS TIMESTAMP)
+                  AND CAST(:endDate   AS TIMESTAMP)
+              );
+				""",
+        resultSetMapping = "findClientResult")
+
+
+
+
 
 /**
  * The type Node mapping entity.

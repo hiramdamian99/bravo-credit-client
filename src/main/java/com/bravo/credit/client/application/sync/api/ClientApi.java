@@ -21,6 +21,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import java.util.List;
+
 /** The interface Product controller. */
 @RequestMapping("api/v1")
 public interface ClientApi {
@@ -37,8 +39,8 @@ public interface ClientApi {
     @PostMapping(value = "/search/client",  produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to get enquery node")
-    ResponseEntity<Client> getProcess( @RequestHeader HttpHeaders header,
-                                        @RequestBody String enqueryNodeId) throws Exception;
+    ResponseEntity<List<Client>> getProcess(@RequestHeader HttpHeaders header,
+                                           @RequestBody Client client) throws Exception;
 
 
 
