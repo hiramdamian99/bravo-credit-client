@@ -1,13 +1,9 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- *  VERADAT PROPRIETARY/CONFIDENTIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * File: AsyncInputAdapter
- * Author: Hiram Lopez Damian
- * Created At: 12/09/2023
- * Updated At: 12/03/2025
- * Description: This class persist node routings information
+ * Project: bravo-credit-client
+ * File: AsyncInputAdapter.java
  */
 
 
@@ -41,6 +37,5 @@ public class AsyncInputAdapter {
      * @param client
      */
     public void persistScheduledMatchProcess(Client client) throws Exception {
-        nodeMappingUseCase.persistNodeMappings(client);
     }
 }

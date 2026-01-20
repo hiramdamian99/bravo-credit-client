@@ -1,10 +1,9 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * Module: adapter-persistence-spring-data-jpa
- * File: NodeMappingRepository.java
+ * Project: bravo-credit-client
+ * File: ClientRepository.java
  */
 
 package com.bravo.credit.client.infrastructure.percistence.repository;
@@ -32,20 +31,20 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer>
     @Transactional
     @Query(value = """
     INSERT INTO control.tr_client (
-        mount_income,
-        destiny_institution,
+        identifier,
+        monthly_income,
+        amount,
         country,
-        destiny_mapping,
         created_at,
         updated_at,
         created_by,
         updated_by
     )
     VALUES (
-        :mountIncome,
-        :destinyInstitution,
-        :country,
+        :identifier,
+        :monthlyIncome,
         :amount,
+        :country,
         :createdAt,
         :updatedAt,
         :createdBy,
@@ -53,10 +52,10 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer>
     )
 """, nativeQuery = true)
     void createdClient(
-            @Param("mountIncome") String mountIncome,
-            @Param("destinyInstitution") String destinyInstitution,
+            @Param("identifier") String identifier,
+            @Param("monthlyIncome") Integer monthlyIncome,
+            @Param("amount") Integer amount,
             @Param("country") String country,
-            @Param("amount") String amount,
             @Param("createdAt") Instant createdAt,
             @Param("updatedAt") Instant updatedAt,
             @Param("createdBy") String createdBy,
@@ -66,14 +65,21 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer>
 
     @Query(nativeQuery = true, name = "findClient")
     List<Client> findClient(
-            @Param("mountIncome") String mountIncome,
-            @Param("destinyInstitution") String destinyInstitution,
+            @Param("processId") Long processId,
+            @Param("identifier") String identifier,
+            @Param("identifierLike") String identifierLike,
+            @Param("monthlyIncome") Integer monthlyIncome,
+            @Param("monthlyIncomeMin") Integer monthlyIncomeMin,
+            @Param("monthlyIncomeMax") Integer monthlyIncomeMax,
+            @Param("amount") Integer amount,
+            @Param("amountMin") Integer amountMin,
+            @Param("amountMax") Integer amountMax,
             @Param("country") String country,
-            @Param("amount") String amount,
-            @Param("createdAt") Instant createdAt,
-            @Param("updatedAt") Instant updatedAt,
+            @Param("createdFrom") Instant createdFrom,
+            @Param("createdTo") Instant createdTo,
+            @Param("updatedFrom") Instant updatedFrom,
+            @Param("updatedTo") Instant updatedTo,
             @Param("createdBy") String createdBy,
             @Param("updatedBy") String updatedBy
     );
-
 }

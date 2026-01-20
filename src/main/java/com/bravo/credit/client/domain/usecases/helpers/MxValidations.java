@@ -1,3 +1,12 @@
+/*
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
+ *
+ * Project: bravo-credit-client
+ * File: MxValidations.java
+ */
+
+
 package com.bravo.credit.client.domain.usecases.helpers;
 
 

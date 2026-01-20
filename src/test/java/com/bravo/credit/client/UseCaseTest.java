@@ -1,10 +1,9 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * Module: domain
- * File: NodeMappingUseCaseTest.java
+ * Project: bravo-credit-client
+ * File: UseCaseTest.java
  */
 
 package com.bravo.credit.client;
@@ -16,7 +15,6 @@ import org.mockito.junit.MockitoJUnitRunner;
 
 
 /**
- * Test for NodeMappingUseCase
  * @Author: Hiram Lopez Damian
  * @LastContributor: Hiram Lopez Damian
  * @Created At: 05/03/2025

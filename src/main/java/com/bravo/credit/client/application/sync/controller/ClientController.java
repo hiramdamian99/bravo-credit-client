@@ -1,10 +1,9 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * Module: adapter-rest
- * File: NodeManagerController.java
+ * Project: bravo-credit-client
+ * File: ClientController.java
  */
 
 package com.bravo.credit.client.application.sync.controller;
@@ -13,6 +12,7 @@ package com.bravo.credit.client.application.sync.controller;
 import com.bravo.credit.client.application.sync.api.ClientApi;
 import com.bravo.credit.client.domain.inputport.ClientAsyncInputPort;
 import com.bravo.credit.client.domain.model.Client;
+import com.bravo.credit.client.domain.model.ClientRequest;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,6 +21,7 @@ import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.RestController;
 
+import java.util.List;
 
 
 /**
@@ -51,10 +52,9 @@ public class ClientController implements ClientApi {
      * @return Mapping
      */
     @Override
-    public ResponseEntity<Client> getProcess(HttpHeaders header,
-                                              String enqueryNodeId)  {
+    public ResponseEntity<List<Client>> getProcess(HttpHeaders header, ClientRequest enqueryNodeId) throws Exception {
 
-        Client nodeMapping = nodeMappingAsyncInputPort.getByDestinyMapping(enqueryNodeId);
+        List<Client> nodeMapping = nodeMappingAsyncInputPort.getClientData(enqueryNodeId);
         if (nodeMapping == null) {
             return new ResponseEntity<>(HttpStatus.NOT_FOUND);
         }

@@ -1,3 +1,12 @@
+/*
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
+ *
+ * Project: bravo-credit-client
+ * File: SecurityAdapter.java
+ */
+
+
 package com.bravo.credit.client.infrastructure.security;
 
 

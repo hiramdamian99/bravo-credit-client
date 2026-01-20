@@ -1,9 +1,8 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * Module: bootloader
+ * Project: bravo-credit-client
  * File: ApplicationLauncher.java
  */
 

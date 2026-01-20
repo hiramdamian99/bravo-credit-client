@@ -13,13 +13,11 @@
         <relativePath/>
     </parent>
 
-    <groupId>com.veradat.node-manager</groupId>
-    <artifactId>veradat-node-manager</artifactId>
+    <groupId>com.bravo.credit.client</groupId>
+    <artifactId>bravo.credit.client</artifactId>
     <version>2.0.1</version>
     <packaging>jar</packaging>
 
-    <name>com-veradat-node-manager</name>
-    <description>com-veradat-node-manager</description>
 
     <properties>
         <!-- Java -->
@@ -37,9 +35,7 @@
         <!-- SpringDoc (Boot 3.x) -->
         <springdoc.version>2.5.0</springdoc.version>
 
-        <!-- Tus libs internas (PON AQUÍ las versiones reales existentes en tu feed) -->
-        <veradat.messages-broker.version>REPLACE_ME</veradat.messages-broker.version>
-        <veradat.token-validator.version>REPLACE_ME</veradat.token-validator.version>
+
     </properties>
 
     <!-- Importante para que spring-cloud-starters no te pidan versiones -->
@@ -209,14 +205,6 @@
         </plugins>
     </build>
 
-    <!-- Tu repo interno -->
-    <repositories>
-        <repository>
-            <id>veradat-commons-lib</id>
-            <url>https://pkgs.dev.azure.com/veradat/_packaging/veradat-commons-lib/maven/v1</url>
-            <releases><enabled>true</enabled></releases>
-            <snapshots><enabled>true</enabled></snapshots>
-        </repository>
-    </repositories>
+
 
 </project>

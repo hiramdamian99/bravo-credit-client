@@ -1,16 +1,18 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * File: NodeMappingAsyncInputPort.java
+ * Project: bravo-credit-client
+ * File: ClientAsyncInputPort.java
  */
-
 package com.bravo.credit.client.domain.inputport;
 
 
 
 import com.bravo.credit.client.domain.model.Client;
+import com.bravo.credit.client.domain.model.ClientRequest;
+
+import java.util.List;
 
 /**
  * The interface Node mapping async input port.
@@ -30,7 +32,6 @@ public interface ClientAsyncInputPort {
      *
      * @return the process id
      */
-    Client getByDestinyMapping(String enqueryNodeId) ;
 
 
 
@@ -42,6 +43,6 @@ public interface ClientAsyncInputPort {
      *
      * @param nodeMappings the node mappings
      */
-    void persistNodeMappings(Client nodeMappings) throws Exception;
+    List<Client> getClientData(ClientRequest nodeMappings) throws Exception;
 
 }

@@ -1,16 +1,16 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * File: NodeMappingUseCase.java
+ * Project: bravo-credit-client
+ * File: ClientUseCase.java
  */
-
 package com.bravo.credit.client.domain.usecases;
 
 
 import com.bravo.credit.client.domain.inputport.ClientAsyncInputPort;
 import com.bravo.credit.client.domain.model.Client;
+import com.bravo.credit.client.domain.model.ClientRequest;
 import com.bravo.credit.client.domain.outputport.PersistencePort;
 
 
@@ -65,13 +65,10 @@ public class ClientUseCase implements ClientAsyncInputPort {
     /**
      * Return new node mapping.
      *
-     * @param enqueryNodeId the origin node
+     * @param client the origin node
      * @return the enquery node Id
      */
 
-    public List<Client> getByDestinyMapping(Client client)  {
-        return persistencePort.getByDestinyMapping(client);
-    }
 
 
 
@@ -97,12 +94,13 @@ public class ClientUseCase implements ClientAsyncInputPort {
     /**
      * Register node mapping list.
      *
-     * @param nodeMappings the origin node ids
+     * @param client the origin node ids
      *
      */
-
     @Override
-    public void persistNodeMappings(Client client) throws Exception {
+    public List<Client> getClientData(ClientRequest client) throws Exception {
+
+    return persistencePort.getClientData(client);
 
     }
 

@@ -1,16 +1,15 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * Module: adapter-persistence-spring-data-jpa
+ * Project: bravo-credit-client
  * File: ProductSpringJpaAdapter.java
  */
-
 package com.bravo.credit.client.infrastructure.percistence.adapter;
 
 
 import com.bravo.credit.client.domain.model.Client;
+import com.bravo.credit.client.domain.model.ClientRequest;
 import com.bravo.credit.client.domain.outputport.PersistencePort;
 import com.bravo.credit.client.infrastructure.percistence.repository.ClientRepository;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -63,17 +62,27 @@ public class ProductSpringJpaAdapter implements PersistencePort {
      *
      * @return the process id
      */
-    public List<Client> getByDestinyMapping(Client client) {
+    public List<Client> getClientData(ClientRequest req) {
         return nodeMappingRepository.findClient(
-                client.getIdentifier(),
-                client.getMonthlyIncome(),
-                client.getAmount(),
-                client.getCountry(),
-                Instant.now(),
-                Instant.now(),
-                "SYSTEM",
-                "SYSTEM"
+                req.getProcessId(),
+                req.getIdentifier(),
+                req.getIdentifierLike(),
+                req.getMonthlyIncome(),
+                req.getMonthlyIncomeMin(),
+                req.getMonthlyIncomeMax(),
+                req.getAmount(),
+                req.getAmountMin(),
+                req.getAmountMax(),
+                req.getCountry(),
+                req.getCreatedFrom(),
+                req.getCreatedTo(),
+                req.getUpdatedFrom(),
+                req.getUpdatedTo(),
+                req.getCreatedBy(),
+                req.getUpdatedBy()
         );
     }
+
+
 
 }

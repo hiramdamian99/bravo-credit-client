@@ -1,17 +1,16 @@
 /*
- * D. R. © Veradat Smart Network, S.A.P.I de C.V., Ciudad de México, 2023
- * VERADAT PROPRIETARY/CONFIDENCIAL. Use is subject to license terms.
+ * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
+ * CONFIDENTIAL Use is subject to license terms.
  *
- * Project: veradat-node-manager
- * Module: adapter-rest
- * File: NodeManagerApi.java
+ * Project: bravo-credit-client
+ * File: ClientApi.java
  */
-
 package com.bravo.credit.client.application.sync.api;
 
 
 
 import com.bravo.credit.client.domain.model.Client;
+import com.bravo.credit.client.domain.model.ClientRequest;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -40,7 +39,7 @@ public interface ClientApi {
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to get enquery node")
     ResponseEntity<List<Client>> getProcess(@RequestHeader HttpHeaders header,
-                                           @RequestBody Client client) throws Exception;
+                                           @RequestBody ClientRequest client) throws Exception;
 
 
 
