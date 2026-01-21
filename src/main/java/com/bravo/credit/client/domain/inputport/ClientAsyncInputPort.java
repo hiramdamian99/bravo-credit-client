@@ -11,6 +11,7 @@ package com.bravo.credit.client.domain.inputport;
 
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
+import com.bravo.credit.client.domain.model.ClientResponse;
 
 import java.util.List;
 
@@ -43,6 +44,6 @@ public interface ClientAsyncInputPort {
      *
      * @param nodeMappings the node mappings
      */
-    List<Client> getClientData(ClientRequest nodeMappings) throws Exception;
+    List<ClientResponse> getClientData(ClientRequest nodeMappings) throws Exception;
 
 }

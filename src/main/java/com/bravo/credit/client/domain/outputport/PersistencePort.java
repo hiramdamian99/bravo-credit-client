@@ -10,6 +10,7 @@ package com.bravo.credit.client.domain.outputport;
 
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
+import com.bravo.credit.client.domain.model.ClientResponse;
 
 import java.util.List;
 
@@ -35,6 +36,6 @@ public interface PersistencePort
     void createdClient(Client client) ;
 
 
-    List<Client> getClientData(ClientRequest client) ;
+    List<ClientResponse> getClientData(ClientRequest client) ;
 
 }

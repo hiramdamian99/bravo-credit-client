@@ -8,6 +8,7 @@
 
 package com.bravo.credit.client.infrastructure.percistence.entity;
 
+import com.bravo.credit.client.domain.model.ClientResponse;
 import jakarta.persistence.Column;
 import jakarta.persistence.ColumnResult;
 import jakarta.persistence.ConstructorResult;
@@ -27,7 +28,7 @@ import java.time.OffsetDateTime;
 @SqlResultSetMapping(
         name = "findClientResult",
         classes = @ConstructorResult(
-                targetClass = com.bravo.credit.client.domain.model.Client.class,
+                targetClass = ClientResponse.class,
                 columns = {
                         @ColumnResult(name = "process_id", type = Long.class),
                         @ColumnResult(name = "identifier", type = String.class),

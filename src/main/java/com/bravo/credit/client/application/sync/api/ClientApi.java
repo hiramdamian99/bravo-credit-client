@@ -11,6 +11,7 @@ package com.bravo.credit.client.application.sync.api;
 
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
+import com.bravo.credit.client.domain.model.ClientResponse;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
@@ -38,8 +39,8 @@ public interface ClientApi {
     @PostMapping(value = "/search/client",  produces = MediaType.APPLICATION_JSON_VALUE,
             consumes = MediaType.APPLICATION_JSON_VALUE)
     @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to get enquery node")
-    ResponseEntity<List<Client>> getProcess(@RequestHeader HttpHeaders header,
-                                           @RequestBody ClientRequest client) throws Exception;
+    ResponseEntity<List<ClientResponse>> getProcess(@RequestHeader HttpHeaders header,
+                                                    @RequestBody ClientRequest client) throws Exception;
 
 
 

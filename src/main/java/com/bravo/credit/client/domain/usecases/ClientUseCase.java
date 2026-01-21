@@ -11,6 +11,7 @@ package com.bravo.credit.client.domain.usecases;
 import com.bravo.credit.client.domain.inputport.ClientAsyncInputPort;
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
+import com.bravo.credit.client.domain.model.ClientResponse;
 import com.bravo.credit.client.domain.outputport.PersistencePort;
 
 
@@ -83,9 +84,6 @@ public class ClientUseCase implements ClientAsyncInputPort {
             default:
                 throw new Exception("Pais no valido para crear cliente: " + client.getCountry());
         }
-
-
-
         persistencePort.createdClient( client);
     }
 
@@ -98,7 +96,7 @@ public class ClientUseCase implements ClientAsyncInputPort {
      *
      */
     @Override
-    public List<Client> getClientData(ClientRequest client) throws Exception {
+    public List<ClientResponse> getClientData(ClientRequest client) throws Exception {
 
     return persistencePort.getClientData(client);
 

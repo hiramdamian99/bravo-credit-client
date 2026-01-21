@@ -9,6 +9,7 @@
 package com.bravo.credit.client.infrastructure.percistence.repository;
 
 import com.bravo.credit.client.domain.model.Client;
+import com.bravo.credit.client.domain.model.ClientResponse;
 import com.bravo.credit.client.infrastructure.percistence.entity.ClientEntity;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Modifying;
@@ -64,7 +65,7 @@ public interface ClientRepository extends JpaRepository<ClientEntity, Integer>
 
 
     @Query(nativeQuery = true, name = "findClient")
-    List<Client> findClient(
+    List<ClientResponse> findClient(
             @Param("processId") Long processId,
             @Param("identifier") String identifier,
             @Param("identifierLike") String identifierLike,

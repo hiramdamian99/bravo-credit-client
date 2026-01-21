@@ -1,41 +1,22 @@
-/*
- * D. R. © Hiram Solutions de C.V., Ciudad de México, 2026
- * CONFIDENTIAL Use is subject to license terms.
- *
- * Project: bravo-credit-client
- * File: Client.java
- */
-
-
 package com.bravo.credit.client.domain.model;
-
-
-
 
 import lombok.AllArgsConstructor;
 import lombok.Data;
 import lombok.NoArgsConstructor;
+import java.time.OffsetDateTime;
 
-import java.time.Instant;
-
-
-/**
- * The type Client.
- */
 @Data
 @AllArgsConstructor
 @NoArgsConstructor
-public class Client {
+public class ClientResponse {
 
     private  Long processId;
     private  String identifier;
     private  Integer monthlyIncome;
     private  Integer amount;
     private  String country;
-    private  Instant createdAt;
-    private  Instant updatedAt;
+    private OffsetDateTime createdAt;
+    private OffsetDateTime updatedAt;
     private  String createdBy;
     private  String updatedBy;
-
-
 }
