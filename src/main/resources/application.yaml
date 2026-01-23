@@ -17,6 +17,11 @@ spring:
 server:
   port: 8080
 
+security:
+  jwt:
+    secret: "super_secret_key_bravo_credit_client_2026_very_long_1234567890"
+
+
 
 
 logging:
