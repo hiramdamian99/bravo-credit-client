@@ -12,6 +12,7 @@ package com.bravo.credit.client.domain.inputport;
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
 import com.bravo.credit.client.domain.model.ClientResponse;
+import com.bravo.credit.client.domain.model.InformationResponse;
 
 import java.util.List;
 
@@ -36,7 +37,7 @@ public interface ClientAsyncInputPort {
 
 
 
-    void createdClient(Client client) throws Exception;
+    InformationResponse createdClient(Client client) throws Exception;
 
 
     /**

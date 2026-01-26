@@ -14,6 +14,7 @@ import com.bravo.credit.client.domain.inputport.ClientAsyncInputPort;
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
 import com.bravo.credit.client.domain.model.ClientResponse;
+import com.bravo.credit.client.domain.model.InformationResponse;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -67,9 +68,13 @@ public class ClientController implements ClientApi {
 
 
     @Override
-    public ResponseEntity<Void> createdClient(HttpHeaders header, Client createdClient) throws Exception {
-         nodeMappingAsyncInputPort.createdClient(createdClient);
-        return new ResponseEntity<>( HttpStatus.OK);
+    public ResponseEntity<InformationResponse> createdClient(HttpHeaders header, Client createdClient) throws Exception {
+
+        InformationResponse nodeMapping = nodeMappingAsyncInputPort.createdClient(createdClient);
+        if (nodeMapping == null) {
+            return new ResponseEntity<>(HttpStatus.INTERNAL_SERVER_ERROR);
+        }
+        return new ResponseEntity<>(nodeMapping ,HttpStatus.OK);
     }
 
 

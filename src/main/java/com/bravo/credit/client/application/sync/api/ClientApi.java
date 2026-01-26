@@ -12,11 +12,15 @@ package com.bravo.credit.client.application.sync.api;
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
 import com.bravo.credit.client.domain.model.ClientResponse;
+import com.bravo.credit.client.domain.model.InformationResponse;
+import io.swagger.v3.oas.annotations.media.Content;
+import io.swagger.v3.oas.annotations.media.Schema;
 import io.swagger.v3.oas.annotations.responses.ApiResponse;
+import io.swagger.v3.oas.annotations.responses.ApiResponses;
 import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.http.ResponseEntity;
-import org.springframework.security.access.prepost.PreAuthorize;
+import org.springframework.web.ErrorResponse;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -31,32 +35,51 @@ public interface ClientApi {
 
 
 
-    /**
-     * Gets process.
-     *
-     * @param enqueryNodeId the enquery node id
-     * @return the process
-     */
-    @PostMapping(value = "/search/client",  produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to get enquery node")
-    ResponseEntity<List<ClientResponse>> getProcess(@RequestHeader HttpHeaders header,
-                                                    @RequestBody ClientRequest client) throws Exception;
+    @PostMapping(
+            value = "/search/client",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "200", description = "Búsqueda exitosa",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ClientResponse.class))),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "No se encontraron clientes",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    ResponseEntity<List<ClientResponse>> getProcess(
+            @RequestHeader HttpHeaders header,
+            @RequestBody ClientRequest client
+    ) throws Exception;
 
 
-
-    /**
-     * Gets process.
-     *
-     * @param enqueryNodeId the enquery node id
-     * @return the process
-     */
-    @PostMapping(value = "created/client",  produces = MediaType.APPLICATION_JSON_VALUE,
-            consumes = MediaType.APPLICATION_JSON_VALUE)
-    @ApiResponse(useReturnTypeSchema = true, responseCode = "200", description = "successful to get enquery node")
-    ResponseEntity<Void> createdClient( @RequestHeader HttpHeaders header,
-                                        @RequestBody Client client) throws Exception;
-
-
+    @PostMapping(
+            value = "/created/client",
+            produces = MediaType.APPLICATION_JSON_VALUE,
+            consumes = MediaType.APPLICATION_JSON_VALUE
+    )
+    @ApiResponses({
+            @ApiResponse(responseCode = "201", description = "Cliente creado"),
+            @ApiResponse(responseCode = "400", description = "Solicitud inválida",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "404", description = "Recurso relacionado no encontrado (si aplica)",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class))),
+            @ApiResponse(responseCode = "500", description = "Error interno",
+                    content = @Content(mediaType = MediaType.APPLICATION_JSON_VALUE,
+                            schema = @Schema(implementation = ErrorResponse.class)))
+    })
+    ResponseEntity<InformationResponse> createdClient(
+            @RequestHeader HttpHeaders header,
+            @RequestBody Client client
+    ) throws Exception;
 
 }

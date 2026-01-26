@@ -9,19 +9,25 @@ package com.bravo.credit.client.domain.usecases;
 
 
 import com.bravo.credit.client.domain.inputport.ClientAsyncInputPort;
+import com.bravo.credit.client.domain.model.BankInformation;
 import com.bravo.credit.client.domain.model.Client;
 import com.bravo.credit.client.domain.model.ClientRequest;
 import com.bravo.credit.client.domain.model.ClientResponse;
+import com.bravo.credit.client.domain.model.InformationResponse;
+import com.bravo.credit.client.domain.outputport.BankPort;
 import com.bravo.credit.client.domain.outputport.PersistencePort;
 
 
+import com.bravo.credit.client.domain.usecases.helpers.CoValidations;
 import com.bravo.credit.client.domain.usecases.helpers.MxValidations;
 import com.bravo.credit.client.infrastructure.security.SecurityAdapter;
+import org.apache.coyote.Response;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.time.Instant;
 import java.util.List;
 
 /**
@@ -43,6 +49,10 @@ public class ClientUseCase implements ClientAsyncInputPort {
 
     private final MxValidations mxValidations;
 
+    private final CoValidations coValidations;
+    
+    private final BankPort bankPort;
+
     /**
      * logger
      */
@@ -56,10 +66,12 @@ public class ClientUseCase implements ClientAsyncInputPort {
      * @param persistencePort the persistence port
      */
     @Autowired
-    public ClientUseCase(SecurityAdapter securityAdapter, MxValidations mxValidations, PersistencePort persistencePort)
+    public ClientUseCase(SecurityAdapter securityAdapter, MxValidations mxValidations, CoValidations coValidations, BankPort bankPort, PersistencePort persistencePort)
     {
         this.securityAdapter = securityAdapter;
         this.mxValidations = mxValidations;
+        this.coValidations = coValidations;
+        this.bankPort = bankPort;
         this.persistencePort = persistencePort;
     }
 
@@ -73,19 +85,53 @@ public class ClientUseCase implements ClientAsyncInputPort {
 
 
 
+
+    /**
+     * Validaciones por tipo de origen
+     * @param client cliente a dar de alta
+     */
     @Override
-    public void createdClient(Client client) throws Exception {
+    public InformationResponse createdClient(Client client) throws Exception {
+
+        logger.info("Comienzan las validaciones del cliente : ",  client.getIdentifier());
+
+        BankInformation bankInformation = null;
+
         switch (client.getCountry()) {
-            case "MX":
+            case "Mexico":
                 mxValidations.validateCurp(client.getIdentifier());
+                mxValidations.validateAmountMonthIncomeMexico(client.getMonthlyIncome(), client.getAmount());
+                bankInformation = bankPort.bbvaInformation(client);
                 break;
-            case "US":
+            case "Colombia":
+                coValidations.validateCc(client.getIdentifier());
+                coValidations.validateAmountMonthIncomeColombia(client.getMonthlyIncome(), client.getAmount());
+                bankInformation = bankPort.bancolombiaInformation(client);
                 break;
             default:
                 throw new Exception("Pais no valido para crear cliente: " + client.getCountry());
+
         }
         persistencePort.createdClient( client);
+
+        InformationResponse informationResponse = new InformationResponse();
+        informationResponse.setMessage("Cliente creado exitosamente");
+        informationResponse.setAccountId(bankInformation.getAccountId());
+        informationResponse.setApproved(bankInformation.getApproved());
+        informationResponse.setStatusRequest("APR");
+        informationResponse.setCreatedAt(Instant.now());
+        return informationResponse;
     }
+
+
+    /**
+     * Validaciones por tipo de origen
+     * @param client cliente a dar de alta
+     */
+    public void bankValidation(Client client) throws Exception {
+        persistencePort.createdClient( client);
+    }
+
 
 
 

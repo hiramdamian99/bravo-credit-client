@@ -1,5 +1,23 @@
 INSTALACIÓN DE SERVICIO EN LOCAL
 
+requisitos previos:
+- Tener instalado Docker en tu máquina local.
+- Tener instalado Java 17 o superior.
+- Tener instalado Maven.
+- Tener acceso a internet para clonar el repositorio y descargar dependencias.
+- Tener instalado un cliente de Postgres (opcional, para verificar la base de datos).
+- Tener instalado Git para clonar el repositorio.
+- Tener un IDE como IntelliJ IDEA o Eclipse (opcional, para facilitar el desarrollo y ejecución del proyecto).
+- Tener configurada la variable de entorno JAVA_HOME apuntando a la instalación de Java 17 o superior.
+- Tener configurada la variable de entorno MAVEN_HOME apuntando a la instalación de Maven.
+- Tener configurada la variable de entorno PATH para incluir los binarios de Java y Maven.
+- Tener instalado cURL o Postman para probar las APIs del servicio.
+- Tener conocimientos básicos de Java, Spring Boot y PostgreSQL.
+- Tener conocimientos básicos de Docker y Maven.
+- Tener conocimientos básicos de Git para clonar el repositorio.
+- Tener conocimientos básicos de JSON para entender los formatos de entrada y salida de las APIs.
+- Tener conocimientos básicos de HTTP para entender las solicitudes y respuestas de las APIs.
+
 Para instalar y ejecutar el servicio en tu máquina local, sigue estos pasos:
 1. Clona el repositorio:
    ```bash
@@ -49,15 +67,25 @@ REGLAS DE NEGOCIO
 El servicio debe cumplir con las siguientes reglas de negocio al procesar las solicitudes de crédito:
 
 Paises Aceptados:
-- México (MX)
-- Colombia (CO)
+- México 
+- Colombia 
 
 
 Formato de Identificador:
 - México: El identificador debe ser un CURP válido (18 caracteres alfanuméricos).
 - Colombia: El identificador debe ser un NIT válido (10 dígitos numér
-- Monto a Solicitar:
-- Ingreso Mensual
+
+Monto a Solicitar: 
+- El monto solicitado debe ser un valor numérico positivo.
+
+Ingreso Mensual
+- el ingreso mensual debe ser el al menos el 10% del monto solicitado. prara mexico
+- el ingreso mensual debe ser al menos el 30% del monto solicitado para colombia.
+
+La informacion bancaria del cliente debe ser alida
+
+
+
 
 
 Url de creacion de cliente de credito
