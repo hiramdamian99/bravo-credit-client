@@ -14,6 +14,7 @@ import java.util.Map;
 
 @RestController
 @RequestMapping("/auth")
+@CrossOrigin(origins = "http://localhost:5173")
 public class AuthController {
 
     private final JwtEncoder jwtEncoder;
@@ -39,7 +40,7 @@ public class AuthController {
                 .issuedAt(now)
                 .expiresAt(now.plusSeconds(60 * 60)) // 1 hora
                 .subject(username)
-                .claim("roles", List.of("SUPERVISOR")) // IMPORTANTE
+                .claim("roles", List.of("SUPERVISOR"))
                 .build();
 
         JwsHeader jwsHeader = JwsHeader.with(MacAlgorithm.HS256).build();

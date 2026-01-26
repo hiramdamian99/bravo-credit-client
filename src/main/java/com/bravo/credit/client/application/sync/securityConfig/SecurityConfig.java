@@ -1,6 +1,7 @@
 package com.bravo.credit.client.application.sync.securityConfig;
 
 import com.nimbusds.jose.jwk.source.ImmutableSecret;
+import jakarta.ws.rs.HttpMethod;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -28,19 +29,15 @@ public class SecurityConfig {
     private String jwtSecret;
 
     @Bean
-    SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
+    SecurityFilterChain filterChain(HttpSecurity http) throws Exception {
         return http
+                .cors(cors -> {})
                 .csrf(csrf -> csrf.disable())
                 .authorizeHttpRequests(auth -> auth
+                        .requestMatchers(HttpMethod.OPTIONS, "/**").permitAll()
                         .requestMatchers("/auth/**").permitAll()
-                        .requestMatchers("/created/client").hasRole("SUPERVISOR")
+                        .requestMatchers("/api/v1/**").hasRole("SUPERVISOR")
                         .anyRequest().authenticated()
-                )
-                .oauth2ResourceServer(oauth2 -> oauth2
-                        .jwt(jwt -> jwt
-                                .decoder(jwtDecoder())
-                                .jwtAuthenticationConverter(jwtAuthenticationConverter()) // ✅ usa el método privado
-                        )
                 )
                 .build();
     }
@@ -57,7 +54,6 @@ public class SecurityConfig {
         return new NimbusJwtEncoder(new ImmutableSecret<>(secretKey));
     }
 
-    // ✅ IMPORTANTE: NO ES @Bean
     private Converter<Jwt, JwtAuthenticationToken> jwtAuthenticationConverter() {
         return jwt -> {
             List<String> roles = jwt.getClaimAsStringList("roles");
