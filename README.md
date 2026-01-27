@@ -1,121 +1,132 @@
-INSTALACIÓN DE SERVICIO EN LOCAL
+README.md (Markdown)
+# bravo-credit-client
 
-requisitos previos:
-- Tener instalado Docker en tu máquina local.
-- Tener instalado Java 17 o superior.
-- Tener instalado Maven.
-- Tener acceso a internet para clonar el repositorio y descargar dependencias.
-- Tener instalado un cliente de Postgres (opcional, para verificar la base de datos).
-- Tener instalado Git para clonar el repositorio.
-- Tener un IDE como IntelliJ IDEA o Eclipse (opcional, para facilitar el desarrollo y ejecución del proyecto).
-- Tener configurada la variable de entorno JAVA_HOME apuntando a la instalación de Java 17 o superior.
-- Tener configurada la variable de entorno MAVEN_HOME apuntando a la instalación de Maven.
-- Tener configurada la variable de entorno PATH para incluir los binarios de Java y Maven.
-- Tener instalado cURL o Postman para probar las APIs del servicio.
-- Tener conocimientos básicos de Java, Spring Boot y PostgreSQL.
-- Tener conocimientos básicos de Docker y Maven.
-- Tener conocimientos básicos de Git para clonar el repositorio.
-- Tener conocimientos básicos de JSON para entender los formatos de entrada y salida de las APIs.
-- Tener conocimientos básicos de HTTP para entender las solicitudes y respuestas de las APIs.
+Microservicio demo para **gestionar solicitudes de crédito** y **consultar** solicitudes registradas.
 
-Para instalar y ejecutar el servicio en tu máquina local, sigue estos pasos:
-1. Clona el repositorio:
-   ```bash
-   git clone git@github.com:hiramdamian99/bravo-credit-client.git
+> **Meta de ejecución:** siguiendo este README, el entorno debe quedar listo y corriendo en **< 5 minutos** (asumiendo Docker y Java/Maven instalados, y una conexión a internet razonable para descargar dependencias por primera vez).
 
-2. Levanta una imagen de Postgres usando Docker:
+---
 
-    ```bash
-    docker run --name bravo-credit-postgres \
-      -e POSTGRES_USER=bravo_credit_user \
-      -e POSTGRES_PASSWORD=bravo_credit_password \
-      -e POSTGRES_DB=demo \
-      -p 5432:5432 \
-      -d postgres:16
-    ```
+## 1) Objetivo
 
-   
-3. crea la base tabla en base datos con el siguiente comando:
-   ```sql
-   
- CREATE SCHEMA IF NOT EXISTS control;
+Este proyecto expone una API REST para:
+- **Crear** una solicitud de crédito para un cliente.
+- **Buscar** solicitudes por filtros.
+- **Validar reglas de negocio** por país (MX/CO) y consultar un **banco simulado** para determinar elegibilidad y devolver una cuenta asociada.
 
-   
-   
+---
+
+## 2) Stack
+
+- Java 17+
+- Spring Boot
+- Maven
+- PostgreSQL 16 (Docker)
+- Frontend estático (carpeta `public/`)
+
+---
+
+## 3) Requisitos mínimos
+
+- Docker (Desktop o Engine)
+- Java 17+ (JAVA_HOME configurado)
+- Maven 3.9+ (o wrapper si existe en el repo)
+- Git
+- Python 3 (solo para servir el frontend estático) o cualquier servidor HTTP simple
+- cURL (opcional) / Postman (opcional)
+
+---
+
+## 4) Quickstart (local) - menos de 5 minutos
+
+### 4.1 Clonar repo
+```bash
+git clone git@github.com:hiramdamian99/bravo-credit-client.git
+cd bravo-credit-client
+```
+
+### 4.2 Levantar PostgreSQL con Docker
+```bash
+docker run --name bravo-credit-postgres   -e POSTGRES_USER=bravo_credit_user   -e POSTGRES_PASSWORD=bravo_credit_password   -e POSTGRES_DB=demo   -p 5432:5432   -d postgres:16
+```
+
+### 4.3 Crear schema y tabla (sin instalar psql local)
+Este comando ejecuta SQL dentro del contenedor:
+```bash
+docker exec -i bravo-credit-postgres psql -U bravo_credit_user -d demo <<'SQL'
+CREATE SCHEMA IF NOT EXISTS control;
+
 CREATE TABLE IF NOT EXISTS control.tr_client (
-process_id BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
-identifier     VARCHAR(255),
-monthly_income INTEGER,
-amount         INTEGER,
-country        VARCHAR(10),
-created_at     TIMESTAMPTZ DEFAULT now(),
-updated_at     TIMESTAMPTZ DEFAULT now(),
-created_by     VARCHAR(255),
-updated_by     VARCHAR(255)
+  process_id     BIGINT GENERATED ALWAYS AS IDENTITY PRIMARY KEY,
+  identifier     VARCHAR(255) NOT NULL,
+  monthly_income INTEGER      NOT NULL,
+  amount         INTEGER      NOT NULL,
+  country        VARCHAR(10)  NOT NULL,
+  created_at     TIMESTAMPTZ  DEFAULT now(),
+  updated_at     TIMESTAMPTZ  DEFAULT now(),
+  created_by     VARCHAR(255),
+  updated_by     VARCHAR(255)
 );
-   ```
+SQL
+```
 
-4. levanta el microservicio con el siguiente comando:
-   ```bash
-   mvn spring-boot:run
-   ```
-las configuraciones de la base de datos se encuentran en el archivo application.properties ubicado en src/main/resources
+### 4.4 Levantar el backend
+> Nota: la primera vez Maven puede tardar un poco más mientras descarga dependencias.
 
-5 . Levantar el front desaclopado de back, ubicarse en la carpeta public y ejecutar
+```bash
+mvn spring-boot:run
+```
+
+El backend queda en:
+- `http://localhost:8080`
+
+Las configuraciones de base de datos están en:
+- `src/main/resources/application.properties`
+
+### 4.5 Levantar el frontend (desacoplado del backend)
+Desde la raíz del repo:
+```bash
+cd public
 python3 -m http.server 5173
+```
 
-**REGLAS DE NEGOCIO**
+Abre en el navegador:
+- `http://localhost:5173`
 
-El servicio debe cumplir con las siguientes reglas de negocio al procesar las solicitudes de crédito:
+---
 
-Paises Aceptados:
-- México 
-- Colombia 
+## 5) API
 
+### 5.1 Crear solicitud de crédito
+**POST** `http://localhost:8080/api/v1/created/client`
 
-Formato de Identificador:
-- México: El identificador debe ser un CURP válido (18 caracteres alfanuméricos).
-- Colombia: El identificador debe ser un CC válido (entre 6 y 10 dígitos numéricos).
-
-Monto a Solicitar: 
-- El monto solicitado debe ser un valor numérico positivo.
-
-Ingreso Mensual
-- el ingreso mensual debe ser el al menos el 10% del monto solicitado. prara mexico
-- el ingreso mensual debe ser al menos el 30% del monto solicitado para colombia.
-
-Consultar en el banco si el cliente es apto para credito y retornar la cuenta asociada al cliente
-
-
-
-
-
-
-
-Url de creacion de cliente de credito
-http://localhost:8080/api/v1/created/client
-
-formato de json de entrada
+Request:
 ```json
 {
-
   "identifier": "AUSP000730MBSGTNA6",
-  "monthlyIncome": "15000",
+  "monthlyIncome": 15000,
   "country": "MX",
-  "amount": "200000"
-  
+  "amount": 200000
 }
 ```
 
-Url de consulta de cliente de credito
-http://localhost:8080/api/v1/search/client
+Ejemplo con cURL:
+```bash
+curl -X POST "http://localhost:8080/api/v1/created/client"   -H "Content-Type: application/json"   -d '{"identifier":"AUSP000730MBSGTNA6","monthlyIncome":15000,"country":"MX","amount":200000}'
+```
 
+Respuestas esperadas (alto nivel):
+- `201 Created` si se registra correctamente.
+- `400 Bad Request` si hay validaciones de formato o parámetros inválidos.
+- `422 Unprocessable Entity` si la solicitud es válida en sintaxis pero falla reglas de negocio (opcional, depende de la implementación).
+- `500 Internal Server Error` si ocurre un error inesperado.
 
-formato de json de entrada
+### 5.2 Buscar solicitudes
+**POST** `http://localhost:8080/api/v1/search/client`
+
+Request (filtros opcionales - usa solo los que necesites):
 ```json
 {
-
- {
   "processId": null,
   "identifier": "AUSP000730MBSGTNA6",
   "identifierLike": null,
@@ -133,155 +144,156 @@ formato de json de entrada
   "createdBy": null,
   "updatedBy": null
 }
-  
-}
+```
 
+Ejemplo con cURL:
+```bash
+curl -X POST "http://localhost:8080/api/v1/search/client"   -H "Content-Type: application/json"   -d '{"identifier":"AUSP000730MBSGTNA6"}'
+```
 
-## Decisiones de implementación
+Respuesta esperada:
+- `200 OK` con una lista de resultados (puede ser vacía).
 
-### Arquitectura y stack
-- Se desarrolló el microservicio con **arquitectura hexagonal** (Ports & Adapters).
-- Las **reglas de negocio** y validaciones se ejecutan en el **dominio**.
-- Se utiliza **Spring Boot** como framework principal.
-- Se utiliza **Maven** como gestor de dependencias.
-- Se utiliza **Java 17** como versión del lenguaje.
-- Se utiliza **PostgreSQL** como base de datos.
-- Se utiliza **Docker** para levantar la base de datos en un contenedor.
+---
 
-##El backend de bravo-credit-client está diseñado bajo un enfoque de Arquitectura Hexagonal, 
-también conocida como Ports & Adapters, con el objetivo de mantener el dominio y los casos de uso independientes de frameworks, 
-infraestructura y proveedores externos. Esto permite que el sistema sea testeable, mantenible, y evolutivo, reduciendo el acoplamiento con detalles técnicos.
+## 6) Reglas de negocio
 
+### 6.1 Países aceptados
+- México (`MX`)
+- Colombia (`CO`)
 
-La idea central es:
-* El núcleo (Dominio ) define qué hace el sistema.
-* La aplicación y la infraestructura resuelven cómo se conecta el sistema con el mundo exterior (HTTP, DB, APIs, mensajería, etc.).
-* La comunicación se gobierna a través de puertos (interfaces) que el núcleo expone o consume.
+### 6.2 Formato de identificador
+- **México:** CURP válido (18 caracteres alfanuméricos).
+- **Colombia:** CC válido (6 a 10 dígitos numéricos).
 
-Capas y responsabilidades
-1) Dominio (Domain Usecase)
-El dominio contiene la lógica de negocio “pura” y los conceptos principales del sistema.
-Responsabilidades típicas:
-* Entidades / Value Objects
-* Reglas de negocio invariantes
-* Modelos del dominio
-* Excepciones de negocio
-* Contratos del dominio (en algunos diseños)
-Principio clave: el dominio no depende de Spring, JPA, HTTP, JSON, etc.
+### 6.3 Monto a solicitar
+- Debe ser un número **positivo** (`amount > 0`).
 
-2) Aplicación 
-La capa de aplicación orquesta el negocio a través de casos de uso (services o interactors). Aquí se coordinan validaciones, flujos, transacciones y llamadas a puertos.
-Responsabilidades típicas:
-* Casos de uso (ej. CreateClient, SearchClient)
-* Definición de puertos:
-    * Input ports: lo que el sistema ofrece (lo que el exterior puede pedir)
-    * Output ports: lo que el sistema necesita (repositorios, APIs externas, mensajería, etc.)
-* Modelos de entrada/salida de aplicación (DTOs internos o comandos/queries)
+### 6.4 Ingreso mensual mínimo
+- **México:** `monthlyIncome >= 10%` del monto solicitado.
+- **Colombia:** `monthlyIncome >= 30%` del monto solicitado.
 
-Regla: La aplicación depende del dominio, y de interfaces, no de implementaciones.
+### 6.5 Validación con banco (simulado)
+- El sistema consulta un **banco simulado** para determinar si el cliente es apto.
+- Si es apto, retorna (o asocia) la **cuenta** del cliente.
 
-3) Adaptadores de entrada 
-Son los puntos por donde entra una interacción del mundo exterior al sistema.
-Ejemplos comunes:
-* Controllers REST 
-* Consumers de mensajería
-Rol: traducen HTTP/JSON (u otro protocolo) a un caso de uso (puerto ), y transforman la respuesta a un formato de transporte.
-Importante: el controller no “hace negocio”, solo conecta.
+**Supuesto:** para este reto, el "banco" es una dependencia externa simulada (adapter de salida) para que el flujo sea reproducible localmente.
 
-4) Adaptadores de salida 
-Implementan los puertos  definidos por la aplicación para integrar infraestructura.
-Ejemplos:
-* Persistencia (SQL) como implementación de ClientRepositoryPort
-* Integraciones con servicios externos (HTTP clients / SDKs)
-* Mensajería (Rabbit)
+---
 
-Rol: cumplir el contrato del puerto, encapsulando detalles técnicos, manejo de errores de terceros y mapeos.
+## 7) Decisiones técnicas y arquitectura
 
-Flujo típico end-to-end (cómo “viaja” una petición)
-1. HTTP Request llega a un Controller (adaptador ).
-2. El controller valida lo mínimo de transporte (headers requeridos, formato, etc.).
-3. Llama a un caso de uso (puerto ).
-4. El caso de uso ejecuta reglas de negocio y llama a puertos  (repo, servicio externo, etc.).
-5. Adaptadores output ejecutan integración técnica (DB/API) y retornan resultados al caso de uso.
-6. El caso de uso retorna un resultado.
-7. El controller traduce a HTTP Response.
+### 7.1 Enfoque
+El backend está diseñado bajo **Arquitectura Hexagonal (Ports & Adapters)** para mantener:
+- Dominio y casos de uso **independientes** de frameworks (Spring), transporte (HTTP) y persistencia (JPA/SQL).
+- Integraciones (DB / banco simulado) como detalles intercambiables.
 
-Este flujo garantiza que el core no dependa del mundo exterior.
+### 7.2 Capas (resumen)
+- **Domain:** reglas de negocio, entidades/value objects, excepciones de negocio.
+- **Application:** casos de uso (CreateClient / SearchClient), puertos de entrada/salida.
+- **Adapters In:** controllers REST (mapean HTTP/JSON a casos de uso).
+- **Adapters Out:** repositorios SQL/JPA y clientes externos (banco simulado).
 
-Implementaciones: cómo se materializa en el código
-En una implementación profesional de hexagonal, normalmente se ve algo así:
-* domain/ → entidades, objetos de valor, reglas
-* application/in →  puertos (interfaces), controllera, commands/queries, REST controllers, , seguridad, request/response DTOs
-* adapters/out/ → repositorios JPA, clients externos, implementaciones de puertos
-* infrastructure/ → configuración (Spring @Configuration), observabilidad
+### 7.3 Flujo end-to-end
+1. Llega un request HTTP al Controller.
+2. El Controller transforma el request y llama al caso de uso (input port).
+3. El caso de uso valida reglas de negocio y llama puertos de salida (repo / banco).
+4. Un adapter de salida ejecuta integración (DB / API simulada) y retorna resultado.
+5. El Controller responde al cliente.
 
+### 7.4 Manejo de errores (recomendación Spring)
+Centralizar en un `@RestControllerAdvice` para devolver un formato uniforme:
+- `timestamp`, `status`, `message`, `path`, `traceId` (si aplica), `details` (lista de validaciones).
 
-Manejo de excepciones 
-1. Mantener consistencia y facilitar troubleshooting (logs + correlation id + códigos claros).
-1) Tipos de excepciones recomendadas
-a) Excepciones de negocio (dominio/aplicación)
-*  “CURP inválido”, “estado no permitido”
-* Se convierten típicamente a 400 / 404 / 409 según el caso.
-b) Excepciones de infraestructura
-* Timeouts, errores de DB, caídas de servicios externos, etc.
+Semántica recomendada:
+- `400` validación/parametros
+- `404` no encontrado
+- `409` conflicto (duplicados/estado)
+- `422` reglas de negocio (opcional)
+- `500` inesperado
+- `502/503/504` dependencias externas
 
-2) Traducción a HTTP (Controller Advice / Global Handler)
-Lo más sólido (y estándar en Spring) es centralizar la conversión a HTTP con:
-* @RestControllerAdvice
-* @ExceptionHandler
-Resultado: Un formato de error uniforme como:
-* timestamp
-* status
-* error
-* message
-* path
-* traceId / correlationId
-* details (opcional: lista de validaciones)
-Esto permite que tu API sea predecible y fácil de consumir.
+---
 
-3) Semántica HTTP 
-* 400 Bad Request: validación, formato, parámetros inválidos
-* 404 Not Found: recurso inexistente
-* 409 Conflict: conflicto de estado (duplicados, reglas de transición)
-* 422 Unprocessable Entity: válido en sintaxis pero falla reglas de negocio (opcional)
-* 500 Internal Server Error: errores inesperados
-* 502/503/504: dependencias externas fallando (si manejas integraciones externas)
-* 200 ok: creación exitosa 
+## 8) Pruebas
 
-4) Logging y trazabilidad 
-* Log estructurado 
-* Mensajes de error sin filtrar stack traces al cliente
-* Stack trace solo en logs internos (o condicionado por ambiente)
+```bash
+mvn test
+```
 
-Ventajas logradas con este diseño
-* Alta testabilidad: puedes probar casos de uso con mocks de puertos.
-* Mantenibilidad: cambios en DB o APIs externas no afectan el dominio.
-* Evolución segura: agregar nuevos canales de entrada (gRPC, mensajería) no rompe el core.
-* Menor acoplamiento: Spring/JPA/HTTP quedan como detalles periféricos.
+> Si existen pruebas de integración que requieren DB, asegúrate de tener PostgreSQL corriendo (sección 4.2).
 
+---
 
-### Persistencia y rendimiento
-- Se implementó **actualización de clientes** mediante **query nativa** para optimizar el rendimiento.
-- Se implementó el **filtrado de operaciones** mediante **query nativa** para optimizar el rendimiento.
+## 9) Mejoras futuras (backlog)
 
-### Calidad
-- Se implementaron **pruebas unitarias** y **pruebas de integración** para asegurar la calidad del código.
+- Mejorar estilos del frontend.
+- Incrementar cobertura de pruebas unitarias e integración.
+- Implementar re-encolamiento / mensajería (ej. RabbitMQ) para procesos asíncronos.
+- Separar la inserción en DB en un patrón **orquestador + worker** para escalar workers en múltiples pods.
+- Extraer seguridad y manejo de excepciones a librerías/módulos comunes.
+- Añadir API Gateway para seguridad y ruteo.
+- Externalizar configuración a un servidor de configuración.
+- Pipeline CI/CD, monitoreo y alertas.
+- Pruebas de carga para validar rendimiento.
 
-**MEJORA CONTINUA**
+---
 
-- terminar de implelmtar la mejora de estilos del frontend
-- Se recomienda agregar más pruebas unitarias y de integración para cubrir más casos de uso.
-- terminar de imlementar el reecolamiento por medio de rabitmq
-- gestionar operaciones de insercion en base de datos por medio de dos api un orq y procesador
-para poder tener escalabilidad del procesador a multiples pods para soportar mayor carga, tambien mejorar
-el rendimiento del api orq al no tener que esperar a que se realicen las operaciones de insercion en base de datos
-- la seguridad la externalizaria desde una libreria
-- usar un gateway para manejar la seguridad y el enrutamiento de las peticiones
-- el manejo de excepciones las externalizaria a un modulo comun para utilizarlas dependiendo del tipo de aplicacion
-- Se recomienda implementar pruebas de carga para evaluar el rendimiento bajo condiciones de alta demanda.
-- la configuraciones de cada api en el archivo application.properties las externalizaria a un servidor de configuracion
-- Se recomienda implementar un pipeline de CI/CD para automatizar pruebas, builds y despliegues.
-- Se recomienda implementar monitoreo y alertas para el servicio en producción.
-- Se recomienda realizar revisiones de código periódicas para mantener la calidad del código.
+## 10) Troubleshooting rápido
 
+- **Puerto ocupado (5432/8080/5173):** cambia el puerto o detén el proceso que lo usa.
+- **Reiniciar DB:** `docker restart bravo-credit-postgres`
+- **Borrar contenedor DB (reset):**
+  ```bash
+  docker rm -f bravo-credit-postgres
+  ```
 
+## Seguridad (JWT + Roles)
+Este servicio protege los endpoints usando JWT (HS256) y control de acceso por roles.
+Flujo de autenticación
+1) El cliente solicita un token en:
+   - POST /auth/token (público)
+2) El servicio responde un:
+   - access_token (JWT) con expiración de 1 hora
+3) Para consumir endpoints protegidos, el cliente envía:
+   - Header Authorization: Bearer <access_token>
+     Credenciales de demo
+- username: supervisor
+- password: 1234
+  Nota: esto es solo para demo/ejercicio. En un entorno real se reemplaza por un proveedor de identidad o un store de usuarios con hash (BCrypt), rotación de secretos, MFA, etc.
+  Autorización por rutas
+- /auth/**: permitAll (sin token)
+- /api/v1/**: requiere ROLE_SUPERVISOR
+- cualquier otra ruta: requiere autenticación
+  El rol se obtiene del claim roles del JWT (ej. ["SUPERVISOR"]) y se mapea internamente a ROLE_SUPERVISOR.
+  Configuración del secreto (HS256)
+  El token se firma/valida con un secreto configurado en:
+- security.jwt.secret
+  Ejemplo en src/main/resources/application.properties:
+  security.jwt.secret=change_me_super_secret_key
+  Recomendación: usar variable de entorno:
+  security.jwt.secret=${JWT_SECRET}
+  CORS (Frontend local)
+  Para permitir llamadas desde el frontend local, CORS está habilitado para:
+- http://localhost:5173
+  y métodos GET, POST, PUT, DELETE, OPTIONS.
+  Ejemplos con cURL
+1) Obtener token
+   curl -X POST "http://localhost:8080/auth/token" \
+   -H "Content-Type: application/json" \
+   -d '{"username":"supervisor","password":"1234"}'
+   Respuesta esperada:
+   { "access_token": "eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9..." }
+2) Consumir endpoint protegido
+   TOKEN="PEGA_AQUI_EL_ACCESS_TOKEN"
+   curl -X POST "http://localhost:8080/api/v1/created/client" \
+   -H "Content-Type: application/json" \
+   -H "Authorization: Bearer $TOKEN" \
+   -d '{"identifier":"AUSP000730MBSGTNA6","monthlyIncome":15000,"country":"MX","amount":200000}'
+   Nota técnica (Spring Resource Server)
+   La validación de JWT normalmente se activa configurando oauth2ResourceServer().jwt(...) en el SecurityFilterChain.
+   Si al probar notas que el token no se está validando como esperas, asegúrate de tener algo como:
+   http.oauth2ResourceServer(oauth2 -> oauth2
+   .jwt(jwt -> jwt.jwtAuthenticationConverter(jwtAuthenticationConverter()))
+   );
+   (El claim roles se convierte a authorities con prefijo ROLE_, por eso se exige hasRole("SUPERVISOR").)
